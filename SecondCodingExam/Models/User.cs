@@ -19,5 +19,9 @@ public partial class User
 
     public virtual ICollection<BenefitsHistory> BenefitsHistories { get; set; } = new List<BenefitsHistory>();
 
-    public virtual ICollection<Cutomer> Cutomers { get; set; } = new List<Cutomer>();
+    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+
+    public virtual ICollection<CustomersBenefitsHistory> CustomersBenefitsHistories { get; set; } = new List<CustomersBenefitsHistory>();
+
+    public virtual ICollection<CustomersCurrentBenefit> CustomersCurrentBenefits { get; set; } = new List<CustomersCurrentBenefit>();
 }

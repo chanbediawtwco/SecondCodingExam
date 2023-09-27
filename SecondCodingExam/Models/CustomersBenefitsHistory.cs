@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace SecondCodingExam.Models;
 
-public partial class BenefitsHistory
+public partial class CustomersBenefitsHistory
 {
     public int Id { get; set; }
 
     public int UserId { get; set; }
 
-    public int BenefitId { get; set; }
+    public int CustomersCurrentBenefitsId { get; set; }
 
     public int GuaranteedIssue { get; set; }
 
@@ -33,7 +33,9 @@ public partial class BenefitsHistory
 
     public string ModifiedBy { get; set; } = null!;
 
-    public virtual Benefit Benefit { get; set; } = null!;
+    public virtual CustomersCurrentBenefit CustomersCurrentBenefits { get; set; } = null!;
+
+    public virtual ICollection<CustomersHistory> CustomersHistories { get; set; } = new List<CustomersHistory>();
 
     public virtual User User { get; set; } = null!;
 }

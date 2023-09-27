@@ -7,15 +7,17 @@ public partial class Calculation
 {
     public int Id { get; set; }
 
-    public int BenefitId { get; set; }
+    public int CustomersCurrentBenefitsId { get; set; }
 
     public int CustomerId { get; set; }
+
+    public int Multiple { get; set; }
 
     public int BenefitsAmountQuotation { get; set; }
 
     public int PendedAmount { get; set; }
 
-    public int CurrentBenefit { get; set; }
+    public string CurrentBenefit { get; set; } = null!;
 
     public DateTime CreatedDate { get; set; }
 
@@ -23,7 +25,7 @@ public partial class Calculation
 
     public bool IsRecalculated { get; set; }
 
-    public virtual Benefit Benefit { get; set; } = null!;
+    public virtual Customer Customer { get; set; } = null!;
 
-    public virtual Cutomer Customer { get; set; } = null!;
+    public virtual CustomersCurrentBenefit CustomersCurrentBenefits { get; set; } = null!;
 }

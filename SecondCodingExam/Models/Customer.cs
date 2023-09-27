@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 namespace SecondCodingExam.Models;
 
-public partial class Cutomer
+public partial class Customer
 {
     public int Id { get; set; }
 
     public int UserId { get; set; }
-
-    public int BenefitId { get; set; }
 
     public string Firstname { get; set; } = null!;
 
@@ -31,13 +29,13 @@ public partial class Cutomer
 
     public string? ModifiedBy { get; set; }
 
-    public virtual Benefit Benefit { get; set; } = null!;
-
     public virtual ICollection<Calculation> Calculations { get; set; } = new List<Calculation>();
 
     public virtual ICollection<CalculationsHistory> CalculationsHistories { get; set; } = new List<CalculationsHistory>();
 
-    public virtual ICollection<CutomersHistory> CutomersHistories { get; set; } = new List<CutomersHistory>();
+    public virtual ICollection<CustomersCurrentBenefit> CustomersCurrentBenefits { get; set; } = new List<CustomersCurrentBenefit>();
+
+    public virtual ICollection<CustomersHistory> CustomersHistories { get; set; } = new List<CustomersHistory>();
 
     public virtual User User { get; set; } = null!;
 }
