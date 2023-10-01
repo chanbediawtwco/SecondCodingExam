@@ -11,6 +11,8 @@ public partial class CustomersBenefitsHistory
 
     public int CustomersCurrentBenefitsId { get; set; }
 
+    public int CustomerId { get; set; }
+
     public int GuaranteedIssue { get; set; }
 
     public int MaxAgeLimit { get; set; }
@@ -32,6 +34,8 @@ public partial class CustomersBenefitsHistory
     public DateTime ModifiedDate { get; set; }
 
     public string ModifiedBy { get; set; } = null!;
+
+    public virtual Customer Customer { get; set; } = null!;
 
     public virtual CustomersCurrentBenefit CustomersCurrentBenefits { get; set; } = null!;
 

@@ -57,6 +57,7 @@ namespace SecondCodingExam.Services
             CustomersCurrentBenefit CustomersCurrentBenefit = await _benefitService.GetCustomerCurrentBenefit(Customer.Id);
             await _context.SaveChangesAsync();
             await _calculationService.CalculateBenefits(CustomersCurrentBenefit, Customer);
+            _context.ChangeTracker.DetectChanges();
         }
         public async Task UpdateCustomer(CustomerDto NewCustomerInformation)
         {
@@ -71,10 +72,17 @@ namespace SecondCodingExam.Services
             await AddAuditStampToCustomer(DbCustomer, await _accountService.GetUserFullname(User), Timestamp, true, CustomersCurrentBenefit.BenefitId);
             await UpdateCurrentBenefit(CustomersCurrentBenefit, await _benefitService.GetBenefitById(Convert.ToInt32(NewCustomerInformation.BenefitId)), Timestamp);
             await _calculationService.CalculateBenefits(CustomersCurrentBenefit, DbCustomer);
+            _context.ChangeTracker.DetectChanges();
         }
         public async Task DeleteCustomer(int CustomerId)
         {
             Customer Customer = await GetCustomerById(CustomerId, await _jwtService.GetUserIdFromToken());
+            Customer.IsDeleted = true;
+            await _context.SaveChangesAsync();
+        }
+        public async Task DeleteCustomerHistory(int CustomerHistoryId)
+        {
+            CustomersHistory Customer = await GetCustomerHistoryById(CustomerHistoryId);
             Customer.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
@@ -87,6 +95,13 @@ namespace SecondCodingExam.Services
                         .Take(Constants.PageSize)
                         .AsAsyncEnumerable());
         }
+        public async Task<IAsyncEnumerable<CustomersHistory>> GetCustomerHistory(int PageNumber, int CustomerId)
+            => await Task.FromResult(_context.CustomersHistories
+                .Where(CustomerHistories => CustomerHistories.CustomerId == CustomerId
+                && !CustomerHistories.IsDeleted)
+                .Skip(_paginationService.GetPageNumber(PageNumber))
+                .Take(Constants.PageSize)
+                .AsAsyncEnumerable());
         private async Task<Customer> GetCustomerById(int CustomerId, int UserId)
         {
             Customer? Customer = await _context.Customers
@@ -95,16 +110,28 @@ namespace SecondCodingExam.Services
             if (Customer == null) throw new Exception(Constants.CustomerNotFound);
             return Customer;
         }
+        private async Task<CustomersHistory> GetCustomerHistoryById(int CustomerHistoryId)
+        {
+            CustomersHistory? CustomersHistory = await _context.CustomersHistories
+            .Where(CustomersHistory => CustomersHistory.Id == CustomerHistoryId && !CustomersHistory.IsDeleted)
+            .FirstOrDefaultAsync();
+            if (CustomersHistory == null) throw new Exception(Constants.CustomerNotFound);
+            return CustomersHistory;
+        }
         private async Task<bool> IsValidCustomerInformation(CustomerDto CustomerInformation)
         {
             ValidationResult CustomerValidator = await _customerValidator.ValidateAsync(CustomerInformation);
             return CustomerValidator.IsValid;
         }
         private async Task<bool> HasCustomerChanges(CustomerDto NewCustomerInformation, Customer DbCustomer)
-            => await Task.FromResult(NewCustomerInformation.Firstname != DbCustomer.Firstname
+        {
+            CustomersCurrentBenefit? CustomersCurrentBenefit = await _benefitService.GetCustomerCurrentBenefit(DbCustomer.Id);
+            return await Task.FromResult(NewCustomerInformation.BenefitId != CustomersCurrentBenefit?.BenefitId
+                || NewCustomerInformation.Firstname != DbCustomer.Firstname
                 || NewCustomerInformation.Lastname != DbCustomer.Lastname
                 || NewCustomerInformation.BasicSalary != DbCustomer.BasicSalary
                 || NewCustomerInformation.Birthdate != DbCustomer.Birthdate);
+        }
         private async Task SaveCurrentBenefit(Benefit Benefit, DateTime Timestamp, int CustomerId)
         {
             CustomersCurrentBenefit CurrentBenefit = _mapper.Map<CustomersCurrentBenefit>(Benefit);
@@ -120,6 +147,7 @@ namespace SecondCodingExam.Services
             await _auditService.AddAuditStamp(Customer, UserFullname, Timestamp, IsModified);
             if (BenefitId != null) await _auditService.AddAuditStampToCalculation(await _calculationService.GetCalculations(Convert.ToInt32(BenefitId), Customer.Id), Timestamp);
             await _context.SaveChangesAsync();
+            _context.ChangeTracker.DetectChanges();
         }
         private async Task MapCustomerHistoryData(Customer Customer, CustomersCurrentBenefit CurrentBenefit, DateTime Timestamp)
         {
@@ -132,7 +160,7 @@ namespace SecondCodingExam.Services
         private async Task MapCustomerToHistory(Customer Customer, CustomersCurrentBenefit CurrentBenefit, string UserFullname, DateTime Timestamp)
         {
             CustomersHistory CustomerHistory = await Task.FromResult(_mapper.Map<CustomersHistory>(Customer));
-            CustomerHistory.CustomersBenefitsHistoryId = await _benefitService.GetCustomersBenefitsHistoryId(CurrentBenefit.Id);
+            CustomerHistory.CustomersBenefitsHistoryId = await _benefitService.GetCustomersBenefitsHistoryId(CurrentBenefit.BenefitId);
             await _auditService.AddAuditStamp(CustomerHistory, UserFullname, Timestamp, true);
             _context.CustomersHistories.Add(CustomerHistory);
         }

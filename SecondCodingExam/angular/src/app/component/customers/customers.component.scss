@@ -1,0 +1,58 @@
+.close-toggle {
+    text-align: end;
+}
+
+.add-customer-button {
+    text-align: center;
+}
+
+.edit-customer-button, .delete-customer-button{
+    border: 0px;
+}
+
+.birthdate {
+    width: 100%;
+}
+
+.birthdate-alert {
+    top: -25px;
+}
+
+.birthdate-label {
+    position: inherit;
+}
+.birthdate-label::after {
+    position: inherit;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+}
+.current-benefit-header-id, 
+.current-benefit-min-age-limit,
+.current-benefit-max-age-limit,
+.current-benefit-min-range,
+.current-benefit-max-range,
+.current-benefit-incremental {
+    position: relative;
+}
+.current-benefit-header-id{
+    left: 20px;
+}
+.current-benefit-min-age-limit,
+.current-benefit-max-age-limit{
+    left: 16px;
+}
+.current-benefit-min-range {
+    left: 22px;
+}
+
+.current-benefit-max-range,
+.current-benefit-incremental {
+    left: 28px;
+}

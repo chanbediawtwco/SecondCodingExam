@@ -101,7 +101,7 @@ namespace SecondCodingExam.Mapper
             CreateMap<CustomersCurrentBenefit, CustomersBenefitsHistory>()
                 .ForMember(CustomersBenefitsHistory => CustomersBenefitsHistory.Id, Option => Option.Ignore())
                 .ForMember(BenefitsHistory => BenefitsHistory.CustomersCurrentBenefitsId,
-                Option => Option.MapFrom(Benefit => Benefit.Id))
+                Option => Option.MapFrom(Benefit => Benefit.BenefitId))
                 .ForMember(BenefitsHistory => BenefitsHistory.BenefitCreatedDate,
                 Option => Option.MapFrom(Benefit => Benefit.CreatedDate))
                 .ForMember(BenefitsHistory => BenefitsHistory.BenefitCreatedBy,

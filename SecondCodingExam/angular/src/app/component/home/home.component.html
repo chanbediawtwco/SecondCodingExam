@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+
+        </div>
+        <div class="col-3">
+            <div class="align-center">
+                <div class="form-check form-switch adjust-in-low-screen-size">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="isLoggingIn" #IsLoggingIn>
+                    <label class="form-check-label" for="#IsLoggingIn">Login</label>
+                </div>
+            </div>
+            <app-login *ngIf="isLoggingIn"></app-login>
+            <app-registration *ngIf="!isLoggingIn"></app-registration>
+        </div>
+    </div>
+</div>

@@ -33,6 +33,8 @@ public partial class Customer
 
     public virtual ICollection<CalculationsHistory> CalculationsHistories { get; set; } = new List<CalculationsHistory>();
 
+    public virtual ICollection<CustomersBenefitsHistory> CustomersBenefitsHistories { get; set; } = new List<CustomersBenefitsHistory>();
+
     public virtual ICollection<CustomersCurrentBenefit> CustomersCurrentBenefits { get; set; } = new List<CustomersCurrentBenefit>();
 
     public virtual ICollection<CustomersHistory> CustomersHistories { get; set; } = new List<CustomersHistory>();
