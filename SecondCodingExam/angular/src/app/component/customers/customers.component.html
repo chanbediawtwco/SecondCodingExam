@@ -19,10 +19,34 @@
                         [(ngModel)]="newCustomer.benefitId" type="text" 
                         placeholder="BenefitId" 
                         #benefitId="ngModel" required>
-                        <div class="alert alert-danger" 
-                        *ngIf="benefitId.invalid && benefitId.touched" role="alert">
-                            Benefit Id is required
+                    </div>
+                </div>
+                <div class="col-2 benefit-dropdown">
+                    <div class="dropleft">
+                        <button class="btn btn-secondary dropdown-toggle benefit-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Benefits
+                        </button>
+                        <div class="dropdown-menu benefit-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" *ngFor="let benefit of benefits">
+                            <div class="container-fluid">
+                                <div class="row" (click)="assignBenefitIdToCustomer(benefit.id)">
+                                    <div class="col-1">ID: {{benefit.id}}</div> 
+                                    <div class="col">Guaranteed Issue: {{benefit.guaranteedIssue}}</div>
+                                    <div class="col">Age Range: {{benefit.minAgeLimit}} - {{benefit.maxAgeLimit}}</div> 
+                                    <div class="col">Range: {{benefit.minRange}} - {{benefit.maxRange}}</div>
+                                    <div class="col">Increments: {{benefit.increments}}</div>
+                                </div>
+                            </div>
+                          </a>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-danger" 
+                    *ngIf="benefitId.invalid && benefitId.touched" role="alert">
+                        Benefit Id is required
                     </div>
                 </div>
             </div>

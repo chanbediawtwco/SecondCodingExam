@@ -12,6 +12,9 @@ export class BenefitsService {
   getBenefits(pageNumber: number) {  
     return this._httpClient.get<any>(`${environment.uri}/benefit/get/${pageNumber}`);
   }
+  getAllBenefits() {  
+    return this._httpClient.get<any>(`${environment.uri}/benefit/get/all`);
+  }
   getCustomersBenefits(customerId: number){
     return this._httpClient.get<any>(`${environment.uri}/benefit/current/customer/get/${customerId}`);;
   }

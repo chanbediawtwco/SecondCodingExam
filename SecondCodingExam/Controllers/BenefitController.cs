@@ -33,6 +33,20 @@ namespace SecondCodingExam.Controllers
             }
         }
         [HttpGet]
+        [Route("get/all")]
+        public async Task<IActionResult> GetAllBenefits()
+        {
+            try
+            {
+                return Ok(await _benefitService.GetAllBenefits());
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Problem();
+            }
+        }
+        [HttpGet]
         [Route("current/customer/get/{customerid}")]
         public async Task<IActionResult> GetCurrentCustomerBenefit(int CustomerId)
         {
