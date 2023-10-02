@@ -59,6 +59,13 @@ namespace SecondCodingExam.Services
                 .Take(Constants.PageSize)
                 .AsAsyncEnumerable());
         }
+        public async Task<IAsyncEnumerable<Benefit>> GetAllBenefits()
+        {
+            int UserId = await _jwtService.GetUserIdFromToken();
+            return await Task.FromResult(_context.Benefits
+                .Where(Benefit => Benefit.UserId == UserId && !Benefit.IsDeleted)
+                .AsAsyncEnumerable());
+        }
         private async Task<bool> IsValidBenefitInformation(BenefitDto Benefit)
         {
             ValidationResult BenefitValidator = await _benefitValidator.ValidateAsync(Benefit);

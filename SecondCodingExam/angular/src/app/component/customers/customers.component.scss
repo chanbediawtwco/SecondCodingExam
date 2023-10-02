@@ -56,3 +56,15 @@ input[type=text], input[type=password] {
 .current-benefit-incremental {
     left: 28px;
 }
+
+.benefit-button {
+    width: 100%;
+}
+.benefit-menu {
+    height: 300px;
+    overflow: auto;
+    top: 34px!important;
+}
+.benefit-dropdown {
+    align-self: self-end;
+}
