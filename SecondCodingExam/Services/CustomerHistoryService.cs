@@ -34,10 +34,6 @@ namespace SecondCodingExam.Services
             _calculationService = calculationService;
 
         }
-        private async Task<CustomersBenefitsHistory> GetCustomersBenefitHistoryById(int CustomerBenefitHistoryId)
-            => await _context.CustomersBenefitsHistories
-            .Where(CustomersBenefitsHistory => CustomersBenefitsHistory.Id == CustomerBenefitHistoryId)
-            .FirstAsync();
         public async Task DeleteCustomerHistory(int CustomerHistoryId)
         {
             CustomersHistory Customer = await GetCustomerHistoryById(CustomerHistoryId);

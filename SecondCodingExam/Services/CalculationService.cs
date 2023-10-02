@@ -21,7 +21,6 @@ namespace SecondCodingExam.Services
             => await Task.FromResult(_context.Calculations.Where(Calculation =>
                 Calculation.CustomersCurrentBenefitsId == BenefitId
                 && Calculation.CustomerId == CustomerId
-                && Calculation.ModifiedDate == null
                 && !Calculation.IsRecalculated)
                 .AsAsyncEnumerable());
         public async Task<IAsyncEnumerable<Calculation>> GetCurrentCalculation(int CustomerId)

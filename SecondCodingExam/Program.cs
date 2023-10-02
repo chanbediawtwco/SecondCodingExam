@@ -65,26 +65,27 @@ var MapConfiguration = new MapperConfiguration(Configuration =>
     Configuration.AddProfile(new MappingProfile());
 });
 IMapper Mapper = MapConfiguration.CreateMapper();
-// Add as singleton to use accross classes
+// Add as singleton to use across classes
 builder.Services.AddSingleton(Mapper);
 
 // Add fluent validators
+builder.Services.AddScoped<IValidator<LoginDto>, LoginValidator>();
 builder.Services.AddScoped<IValidator<BenefitDto>, BenefitValidator>();
 builder.Services.AddScoped<IValidator<CustomerDto>, CustomerValidator>();
-builder.Services.AddScoped<IValidator<LoginDto>, LoginValidator>();
 builder.Services.AddScoped<IValidator<UserRegistrationDto>, UserRegistrationValidator>();
 
 // Add dependency injection
 builder.Services.AddTransient<IJwtService, JwtService>();
-builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IAuditService, AuditService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IBenefitService, BenefitService>();
-builder.Services.AddTransient<ICalculationService, CalculationService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
+builder.Services.AddTransient<ICalculationService, CalculationService>();
 builder.Services.AddTransient<IPaginationService, PaginationService>();
-builder.Services.AddTransient<IBenefitService, BenefitService>();
-builder.Services.AddTransient<ICustomerHistoryService, CustomerHistoryService>();
 builder.Services.AddTransient<IBenefitHistoryService, BenefitHistoryService>();
+builder.Services.AddTransient<ICustomerHistoryService, CustomerHistoryService>();
+builder.Services.AddTransient<ICalculationHistoryService, CalculationHistoryService>();
+
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();

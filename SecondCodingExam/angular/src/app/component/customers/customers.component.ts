@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { Constants } from 'src/app/constant';
 import { IBenefit } from 'src/app/interface/benefit.interface';
+import { ICalculationHistory } from 'src/app/interface/calculation.history.interface';
+import { ICalculation } from 'src/app/interface/calculation.interface';
 import { ICustomerBenefitHistory } from 'src/app/interface/customer.benefit.history.interface';
 import { ICustomerBenefit } from 'src/app/interface/customer.benefit.interface';
 import { ICustomerHistory } from 'src/app/interface/customer.history.interface';
 import { ICustomer } from 'src/app/interface/customer.interface';
 import { BenefitsHistoryService } from 'src/app/service/benefits.history/benefits.history.service';
 import { BenefitsService } from 'src/app/service/benefits/benefits.service';
+import { CalculationsHistoryService } from 'src/app/service/calculations.history/calculations.history.service';
+import { CalculationsService } from 'src/app/service/calculations/calculations.service';
 import { CustomerHistoryService } from 'src/app/service/customer.history/customer.history.service';
 import { CustomersService } from 'src/app/service/customers/customers.service';
 
@@ -19,17 +23,22 @@ export class CustomersComponent {
   constructor(private _customerService: CustomersService,
     private _benefitService: BenefitsService, 
     private _benefitHistoryService: BenefitsHistoryService,
-    private _customerHistoryService: CustomerHistoryService) {}
+    private _customerHistoryService: CustomerHistoryService,
+    private _calculationsService: CalculationsService,
+    private _calculationsHistoryService: CalculationsHistoryService) {}
   pageNumber: number = 0;
   pageCustomerHistoryNumber: number = 0;
   pageCustomerBenefitHistoryNumber: number = 0;
+  pageCustomerCalculationHistoryNumber: number = 0;
   newCustomer: ICustomer = {};
   edittedCustomer?: ICustomer;
   customerBenefit?: ICustomerBenefit;
+  benefits: IBenefit[] = [];
   customers: ICustomer[] = [];
+  calculations: ICalculation[] = [];
+  calculationsHistories: ICalculationHistory[] = [];
   customerHistories: ICustomerHistory[] = [];
   customerBenefitHistories: ICustomerBenefitHistory[] = [];
-  benefits: IBenefit[] = [];
   isAddCustomerShown: boolean = false;
   hasError: boolean = false;
 
@@ -105,6 +114,8 @@ export class CustomersComponent {
     this.pageCustomerHistoryNumber = 0;
     this.getCustomerHistories(this.pageCustomerHistoryNumber, Number(customerId));
     this.getCustomersBenefits(Number(customerId));
+    this.getCustomerCalculation(customerId);
+    this.getCustomerCalculationHistory(customerId);
   }
   getCustomerHistories(increments: number, customerId?: number){
     this.pageCustomerHistoryNumber += increments;
@@ -133,6 +144,29 @@ export class CustomersComponent {
       this.customerBenefitHistories = res;
       if (res.length <= 0) {
         this.pageCustomerBenefitHistoryNumber -= 1;
+      }
+    });
+  }
+  getCustomerCalculation(customerId?: number){
+    this._calculationsService.getCalculations(Number(customerId))
+    .subscribe(res => {
+      this.calculations = res;
+    });
+  }
+  getCustomerCalculationHistory(customerId?: number){
+    this.pageCustomerCalculationHistoryNumber = 0;
+    this.getCustomerCalculationHistories(this.pageCustomerHistoryNumber, Number(customerId));
+  }
+  getCustomerCalculationHistories(increments: number, customerId?: number){
+    this.pageCustomerCalculationHistoryNumber += increments;
+    if (this.pageCustomerCalculationHistoryNumber < 1) {
+      this.pageCustomerCalculationHistoryNumber = 1;
+    }
+    this._calculationsHistoryService.getCalculationsHistory(Number(customerId), this.pageCustomerCalculationHistoryNumber)
+    .subscribe(res => {
+      this.calculationsHistories = res;
+      if (res.length <= 0) {
+        this.pageCustomerCalculationHistoryNumber -= 1;
       }
     });
   }
