@@ -11,12 +11,12 @@ namespace SecondCodingExam.Controllers
     {
         private readonly IBenefitService _benefitService;
         private readonly ILogger<BenefitController> _logger;
-        public BenefitController(IBenefitService benefitService, 
-            ILogger<BenefitController> logger)
+        public BenefitController(
+            ILogger<BenefitController> logger,
+            IBenefitService benefitService)
         {
-            _benefitService = benefitService;
             _logger = logger;
-
+            _benefitService = benefitService;
         }
         [HttpGet]
         [Route("get/{pagenumber}")]
@@ -39,34 +39,6 @@ namespace SecondCodingExam.Controllers
             try
             {
                 return Ok(await _benefitService.GetCustomerCurrentBenefit(CustomerId));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Problem();
-            }
-        }
-        [HttpGet]
-        [Route("history/get/{benefitid}/{pagenumber}")]
-        public async Task<IActionResult> GetBenefitHistory(int BenefitId, int PageNumber)
-        {
-            try
-            {
-                return Ok(await _benefitService.GetBenefitHistories(BenefitId, PageNumber));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Problem();
-            }
-        }
-        [HttpGet]
-        [Route("history/customer/get/{customerid}/{pagenumber}")]
-        public async Task<IActionResult> GetCustomersBenefitHistory(int CustomerId, int PageNumber)
-        {
-            try
-            {
-                return Ok(await _benefitService.GetCustomersBenefitHistory(CustomerId, PageNumber));
             }
             catch (Exception ex)
             {
@@ -112,36 +84,6 @@ namespace SecondCodingExam.Controllers
             {
                 await _benefitService.DeleteBenefit(BenefitId);
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Problem();
-            }
-        }
-        [HttpDelete]
-        [Route("history/delete/{benefitid}")]
-        public async Task<IActionResult> DeleteBenefitHistory(int BenefitId)
-        {
-            try
-            {
-                await _benefitService.DeleteBenefitHistory(BenefitId);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Problem();
-            }
-        }
-        [HttpDelete]
-        [Route("customer/history/delete/{customerbenefithistoryid}")]
-        public async Task<IActionResult> DeleteCustomerBenefitHistory(int CustomerBenefitHistoryId)
-        {
-            try
-            {
-                await _benefitService.DeleteCustomerBenefitHistory(CustomerBenefitHistoryId);
-                return NoContent();
             }
             catch (Exception ex)
             {

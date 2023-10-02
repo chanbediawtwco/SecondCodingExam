@@ -4,7 +4,9 @@ import { ICustomerBenefitHistory } from 'src/app/interface/customer.benefit.hist
 import { ICustomerBenefit } from 'src/app/interface/customer.benefit.interface';
 import { ICustomerHistory } from 'src/app/interface/customer.history.interface';
 import { ICustomer } from 'src/app/interface/customer.interface';
+import { BenefitsHistoryService } from 'src/app/service/benefits.history/benefits.history.service';
 import { BenefitsService } from 'src/app/service/benefits/benefits.service';
+import { CustomerHistoryService } from 'src/app/service/customer.history/customer.history.service';
 import { CustomersService } from 'src/app/service/customers/customers.service';
 
 @Component({
@@ -14,7 +16,9 @@ import { CustomersService } from 'src/app/service/customers/customers.service';
 })
 export class CustomersComponent {
   constructor(private _customerService: CustomersService,
-    private _benefitService: BenefitsService) {}
+    private _benefitService: BenefitsService, 
+    private _benefitHistoryService: BenefitsHistoryService,
+    private _customerHistoryService: CustomerHistoryService) {}
   pageNumber: number = 0;
   pageCustomerHistoryNumber: number = 0;
   pageCustomerBenefitHistoryNumber: number = 0;
@@ -53,7 +57,7 @@ export class CustomersComponent {
     if (this.pageCustomerHistoryNumber < 1) {
       this.pageCustomerHistoryNumber = 1;
     }
-    this._customerService.getCustomerHistory(this.pageCustomerHistoryNumber, Number(customerId))
+    this._customerHistoryService.getCustomerHistory(this.pageCustomerHistoryNumber, Number(customerId))
     .subscribe(res => {
       this.customerHistories = res;
       if (res.length <= 0) {
@@ -76,7 +80,7 @@ export class CustomersComponent {
     if (this.pageCustomerBenefitHistoryNumber < 1) {
       this.pageCustomerBenefitHistoryNumber = 1;
     }
-    this._benefitService.getCustomersBenefitHistory(Number(customerId), this.pageCustomerBenefitHistoryNumber)
+    this._benefitHistoryService.getCustomersBenefitHistory(Number(customerId), this.pageCustomerBenefitHistoryNumber)
     .subscribe(res => {
       this.customerBenefitHistories = res;
       if (res.length <= 0) {
@@ -93,7 +97,7 @@ export class CustomersComponent {
     })
   }
   deleteCustomerHistory(customerHistoryId?: number){
-    this._customerService.deleteCustomerHistory(Number(customerHistoryId))
+    this._customerHistoryService.deleteCustomerHistory(Number(customerHistoryId))
     .subscribe(res => {
       if (res == null) {
         window.location.reload();
@@ -101,7 +105,7 @@ export class CustomersComponent {
     })
   }
   deleteCustomerBenefitHistory(customerBenefitId?: number){
-    this._benefitService.deleteCustomerBenefitHistory(Number(customerBenefitId))
+    this._benefitHistoryService.deleteCustomerBenefitHistory(Number(customerBenefitId))
     .subscribe(res => {
       if (res == null) {
         window.location.reload();

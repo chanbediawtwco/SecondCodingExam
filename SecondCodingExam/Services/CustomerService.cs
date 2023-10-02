@@ -23,6 +23,7 @@ namespace SecondCodingExam.Services
         private readonly IPaginationService _paginationService;
         private readonly ICalculationService _calculationService;
         private readonly IValidator<CustomerDto> _customerValidator;
+        private readonly ICustomerHistoryService _customerHistoryService;
         public CustomerService(
             IMapper mapper,
             IJwtService jwtService,
@@ -32,7 +33,8 @@ namespace SecondCodingExam.Services
             SecondCodingExamDbContext context,
             IPaginationService paginationService,
             ICalculationService calculationService,
-            IValidator<CustomerDto> customerValidator)
+            IValidator<CustomerDto> customerValidator,
+            ICustomerHistoryService customerHistoryService)
         {
             _mapper = mapper;
             _context = context;
@@ -43,6 +45,7 @@ namespace SecondCodingExam.Services
             _paginationService = paginationService;
             _customerValidator = customerValidator;
             _calculationService = calculationService;
+            _customerHistoryService = customerHistoryService;
         }
         public async Task AddNewCustomer(CustomerDto NewCustomer)
         {
@@ -67,7 +70,7 @@ namespace SecondCodingExam.Services
             if (!await HasCustomerChanges(NewCustomerInformation, DbCustomer)) throw new Exception(Constants.NoChangesFound);
             CustomersCurrentBenefit CustomersCurrentBenefit = await _benefitService.GetCustomerCurrentBenefit(DbCustomer.Id);
             DateTime Timestamp = DateTime.Now;
-            await MapCustomerHistoryData(DbCustomer, CustomersCurrentBenefit, Timestamp);
+            await _customerHistoryService.MapCustomerHistoryData(DbCustomer, CustomersCurrentBenefit, Timestamp);
             DbCustomer = _mapper.Map<CustomerDto, Customer>(NewCustomerInformation, DbCustomer);
             await AddAuditStampToCustomer(DbCustomer, await _accountService.GetUserFullname(User), Timestamp, true, CustomersCurrentBenefit.BenefitId);
             await UpdateCurrentBenefit(CustomersCurrentBenefit, await _benefitService.GetBenefitById(Convert.ToInt32(NewCustomerInformation.BenefitId)), Timestamp);
@@ -80,12 +83,6 @@ namespace SecondCodingExam.Services
             Customer.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteCustomerHistory(int CustomerHistoryId)
-        {
-            CustomersHistory Customer = await GetCustomerHistoryById(CustomerHistoryId);
-            Customer.IsDeleted = true;
-            await _context.SaveChangesAsync();
-        }
         public async Task<IAsyncEnumerable<Customer>> GetAllCustomers(int PageNumber)
         {
             int UserId = await _jwtService.GetUserIdFromToken();
@@ -95,13 +92,6 @@ namespace SecondCodingExam.Services
                         .Take(Constants.PageSize)
                         .AsAsyncEnumerable());
         }
-        public async Task<IAsyncEnumerable<CustomersHistory>> GetCustomerHistory(int PageNumber, int CustomerId)
-            => await Task.FromResult(_context.CustomersHistories
-                .Where(CustomerHistories => CustomerHistories.CustomerId == CustomerId
-                && !CustomerHistories.IsDeleted)
-                .Skip(_paginationService.GetPageNumber(PageNumber))
-                .Take(Constants.PageSize)
-                .AsAsyncEnumerable());
         private async Task<Customer> GetCustomerById(int CustomerId, int UserId)
         {
             Customer? Customer = await _context.Customers
@@ -109,14 +99,6 @@ namespace SecondCodingExam.Services
             .FirstOrDefaultAsync();
             if (Customer == null) throw new Exception(Constants.CustomerNotFound);
             return Customer;
-        }
-        private async Task<CustomersHistory> GetCustomerHistoryById(int CustomerHistoryId)
-        {
-            CustomersHistory? CustomersHistory = await _context.CustomersHistories
-            .Where(CustomersHistory => CustomersHistory.Id == CustomerHistoryId && !CustomersHistory.IsDeleted)
-            .FirstOrDefaultAsync();
-            if (CustomersHistory == null) throw new Exception(Constants.CustomerNotFound);
-            return CustomersHistory;
         }
         private async Task<bool> IsValidCustomerInformation(CustomerDto CustomerInformation)
         {
@@ -148,21 +130,6 @@ namespace SecondCodingExam.Services
             if (BenefitId != null) await _auditService.AddAuditStampToCalculation(await _calculationService.GetCalculations(Convert.ToInt32(BenefitId), Customer.Id), Timestamp);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.DetectChanges();
-        }
-        private async Task MapCustomerHistoryData(Customer Customer, CustomersCurrentBenefit CurrentBenefit, DateTime Timestamp)
-        {
-            User User = await _accountService.GetUserById(Customer.UserId);
-            string UserFullname = await _accountService.GetUserFullname(User);
-            await _benefitService.MapBenefitToBenefitHistory(CurrentBenefit, UserFullname, Timestamp);
-            await _calculationService.MapPreviousCalculationsToHistory(Customer.Id, Timestamp);
-            await MapCustomerToHistory(Customer, CurrentBenefit, UserFullname, Timestamp);
-        }
-        private async Task MapCustomerToHistory(Customer Customer, CustomersCurrentBenefit CurrentBenefit, string UserFullname, DateTime Timestamp)
-        {
-            CustomersHistory CustomerHistory = await Task.FromResult(_mapper.Map<CustomersHistory>(Customer));
-            CustomerHistory.CustomersBenefitsHistoryId = await _benefitService.GetCustomersBenefitsHistoryId(CurrentBenefit.BenefitId);
-            await _auditService.AddAuditStamp(CustomerHistory, UserFullname, Timestamp, true);
-            _context.CustomersHistories.Add(CustomerHistory);
         }
     }
 }

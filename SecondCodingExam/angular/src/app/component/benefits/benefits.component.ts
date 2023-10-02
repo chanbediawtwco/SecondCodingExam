@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Constants } from 'src/app/constant';
 import { IBenefitHistory } from 'src/app/interface/benefit.history.interface';
 import { IBenefit } from 'src/app/interface/benefit.interface';
+import { BenefitsHistoryService } from 'src/app/service/benefits.history/benefits.history.service';
 import { BenefitsService } from 'src/app/service/benefits/benefits.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { BenefitsService } from 'src/app/service/benefits/benefits.service';
   styleUrls: ['./benefits.component.scss']
 })
 export class BenefitsComponent {
-  constructor(private _benefitService: BenefitsService) {}
+  constructor(private _benefitService: BenefitsService, private _benefitHistoryService: BenefitsHistoryService) {}
   benefits: IBenefit[] = [];
   benefitsHistories: IBenefitHistory[] = [];
   pageNumber: number = 0;
@@ -48,7 +49,7 @@ export class BenefitsComponent {
     if (this.benefitHistoryPageNumber < 1) {
       this.benefitHistoryPageNumber = 1;
     }
-    this._benefitService.getBenefitsHistory(Number(benefitId), this.benefitHistoryPageNumber)
+    this._benefitHistoryService.getBenefitsHistory(Number(benefitId), this.benefitHistoryPageNumber)
       .subscribe(res => {
         this.benefitsHistories = res;
         if (res.length <= 0) {
@@ -133,7 +134,7 @@ export class BenefitsComponent {
   }
 
   deleteBenefitHistory(id: number){
-    this._benefitService.deleteBenefitHistory(id)
+    this._benefitHistoryService.deleteBenefitHistory(id)
     .subscribe(res => { return res });
     window.location.reload();
   }

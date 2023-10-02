@@ -32,20 +32,6 @@ namespace SecondCodingExam.Controllers
                 return Problem();
             }
         }
-        [HttpGet]
-        [Route("history/get/{pagenumber}/{customerid}")]
-        public async Task<IActionResult> GetCustomerHistory(int PageNumber, int CustomerId)
-        {
-            try
-            {
-                return Ok(await _customerService.GetCustomerHistory(PageNumber, CustomerId));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Problem();
-            }
-        }
         [HttpPost]
         [Route("add")]
         public async Task<IActionResult> AddCustomer([FromBody] CustomerDto NewCustomer)
@@ -83,21 +69,6 @@ namespace SecondCodingExam.Controllers
             try
             {
                 await _customerService.DeleteCustomer(CustomerId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Problem();
-            }
-        }
-        [HttpDelete]
-        [Route("history/delete/{customerhistoryid}")]
-        public async Task<IActionResult> DeleteCustomerHistory(int CustomerHistoryId)
-        {
-            try
-            {
-                await _customerService.DeleteCustomerHistory(CustomerHistoryId);
                 return NoContent();
             }
             catch (Exception ex)
