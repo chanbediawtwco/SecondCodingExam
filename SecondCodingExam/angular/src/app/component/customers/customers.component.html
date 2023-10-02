@@ -1,0 +1,305 @@
+<div class="container-fluid">
+    <div class="container">
+        <div class="form" *ngIf="isAddCustomerShown">
+            <div class="row">
+                <div class="col-1 offset-11 close-toggle">
+                    <button type="button" class="btn-close" aria-label="Close" (click)="toggleAddCustomer()"></button>
+                </div>
+            </div>
+            <div class="row pb-3">
+                <div class="col">
+                    <div class="form-group" 
+                    [class.has-error]="benefitId.invalid && benefitId.touched"
+                    [class.has-success]="benefitId.valid">
+                        <label for="#BenefitId" 
+                        class="{{newCustomer.benefitId == '' || newCustomer.benefitId == undefined ? 'js-hide-label' : 'js-unhide-label'}}">
+                            Benefit Id
+                        </label>
+                        <input class="form-control"
+                        [(ngModel)]="newCustomer.benefitId" type="text" 
+                        placeholder="BenefitId" 
+                        #benefitId="ngModel" required>
+                        <div class="alert alert-danger" 
+                        *ngIf="benefitId.invalid && benefitId.touched" role="alert">
+                            Benefit Id is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group" 
+                    [class.has-error]="firstname.invalid && firstname.touched"
+                    [class.has-success]="firstname.valid">
+                        <label for="#Firstname" 
+                        class="{{newCustomer.firstname == '' || newCustomer.firstname == undefined ? 'js-hide-label' : 'js-unhide-label'}}">
+                            Firstname
+                        </label>
+                        <input class="form-control"
+                        [(ngModel)]="newCustomer.firstname" type="text" 
+                        placeholder="Firstname" 
+                        #firstname="ngModel" required>
+                        <div class="alert alert-danger" 
+                        *ngIf="firstname.invalid && firstname.touched" role="alert">
+                            Firstname is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group" 
+                    [class.has-error]="lastname.invalid && lastname.touched"
+                    [class.has-success]="lastname.valid">
+                        <label for="#Lastname" 
+                        class="{{newCustomer.lastname == '' || newCustomer.lastname == undefined ? 'js-hide-label' : 'js-unhide-label'}}">
+                            Lastname
+                        </label>
+                        <input class="form-control"
+                        [(ngModel)]="newCustomer.lastname" type="text" 
+                        placeholder="Lastname" 
+                        #lastname="ngModel" required>
+                        <div class="alert alert-danger" 
+                        *ngIf="lastname.invalid && lastname.touched" role="alert">
+                            Lastname is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-3">
+                <div class="col">
+                    <div class="form-group" 
+                    [class.has-error]="basicSalary.invalid && basicSalary.touched"
+                    [class.has-success]="basicSalary.valid">
+                        <label for="#BasicSalary" 
+                        class="{{newCustomer.basicSalary == '' || newCustomer.basicSalary == undefined ? 'js-hide-label' : 'js-unhide-label'}}">
+                            Basic Salary
+                        </label>
+                        <input class="form-control"
+                        [(ngModel)]="newCustomer.basicSalary" type="text" 
+                        placeholder="Basic Salary" 
+                        #basicSalary="ngModel" required>
+                        <div class="alert alert-danger" 
+                        *ngIf="basicSalary.invalid && basicSalary.touched" role="alert">
+                            Basic Salary is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group" 
+                    [class.has-error]="birthdate.invalid && birthdate.touched"
+                    [class.has-success]="birthdate.valid">
+                        <mat-form-field class="date-container birthdate">
+                            <label for="#Birthdate"
+                            class="{{newCustomer.birthdate == '' || newCustomer.birthdate == undefined ? 'js-hide-label' : 'js-unhide-label'}}">
+                                Birthdate
+                            </label>
+                            <input matInput class="birthdate-label"
+                            [matDatepicker]="picker" 
+                            [(ngModel)]="newCustomer.birthdate"
+                            placeholder="Birthdate"
+                            #birthdate="ngModel" required>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <div class="alert alert-danger birthdate-alert" 
+                        *ngIf="birthdate.invalid && birthdate.touched" role="alert">
+                            Birthdate is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 offset-4 add-customer-button">
+                    <div class="col-4 offset-4"><button type="button" class="btn btn-outline-success" (click)="addCustomer()">+ Customer</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pb-3">
+        <div class="col-md-10">Customers</div>
+        <div class="col-md-2"><button type="button" class="btn btn-outline-success" (click)="toggleAddCustomer()" *ngIf="!isAddCustomerShown">+ Customer</button></div>
+    </div>
+    <div class="row">
+        <div class="col-1">Id</div>
+        <div class="col-2">Firstname</div>
+        <div class="col-2">Lastname</div>
+        <div class="col-2">Basic Salary</div>
+        <div class="col-2">Birthdate</div>
+    </div>
+    <div class="row">
+        <div class="accordion accordion-borderless" id="accordionFlush">
+            <ng-container class="row" *ngFor="let customer of customers">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" attr.id="flush-heading-customer-{{customer.id}}">
+                        <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                        attr.data-mdb-target="#flush-collapse-customer-{{customer.id}}" aria-expanded="false" attr.aria-controls="flush-collapse-customer-{{customer.id}}"
+                        (click)="getCustomerInformation(customer.id)">
+                            <!-- Current Customer -->
+                            <div class="col-1">{{customer.id}}</div>
+                            <div class="col-2">{{customer.firstname}}</div>
+                            <div class="col-2">{{customer.lastname}}</div>
+                            <div class="col-2">{{customer.basicSalary | currency:'PHP'}}</div>
+                            <div class="col-2">{{customer.birthdate | date:'longDate'}}</div>
+                        </button>
+                    </h2>
+                    <div attr.id="flush-collapse-customer-{{customer.id}}" class="accordion-collapse collapse" attr.attr.aria-labelledby="flush-heading-customer-{{customer.id}}"
+                    data-mdb-parent="#accordionFlush">
+                        <div class="accordion-body card">
+                            <div class="row">
+                                <!-- Customer Histories -->
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-1 offset-md-10">
+                                            <button type="button" class="btn btn-outline-primary edit-button edit-customer-button" (click)="editCustomer(customer.id)"><i class="fa-regular fa-pen-to-square fa-2xl"></i></button>
+                                        </div>
+                                        <div class="col-1">
+                                            <button type="button" class="btn btn-outline-danger delete-button delete-customer-button" (click)="deleteCustomer(customer.id)"><i class="fa-sharp fa-solid fa-trash-can fa-2xl"></i></button>
+                                        </div>
+                                    </div>
+                                    <h3 class="pt-1">Customer History</h3>
+                                    <div class="row pb-1">
+                                        <div class="col-1">Id</div>
+                                        <div class="col-2">Previous Benefit Id</div>
+                                        <div class="col-2">Firstname</div>
+                                        <div class="col-2">Lastname</div>
+                                        <div class="col-2">Basic Salary</div>
+                                        <div class="col-2">Birthdate</div>
+                                        <div class="col-1"></div>
+                                    </div>
+                                    <ng-container >
+                                        <div class="row" *ngFor="let customerHistory of customerHistories">
+                                            <!-- Customer Histories -->
+                                            <div class="col-1">{{customerHistory.id}}</div>
+                                            <div class="col-2">{{customerHistory.customersBenefitsHistoryId}}</div>
+                                            <div class="col-2">{{customerHistory.firstname}}</div>
+                                            <div class="col-2">{{customerHistory.lastname}}</div>
+                                            <div class="col-2">{{customerHistory.basicSalary | currency:'PHP'}}</div>
+                                            <div class="col-2">{{customerHistory.birthdate | date:'longDate'}}</div>
+                                            <div class="col-1">
+                                                <button type="button" class="btn btn-outline-danger delete-customer-button" (click)="deleteCustomerHistory(customerHistory.id)">X</button>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="customerHistories.length <= 0">
+                                        <div class="row">
+                                            <div class="col alert alert-warning">No history found</div>
+                                        </div>
+                                    </ng-container>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item">
+                                                <a class="page-link" tabindex="-1" (click)="getCustomerHistories(-1, customer.id)"><button class="btn btn-light"><<</button></a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" (click)="getCustomerHistories(1, customer.id)"><button class="btn btn-light">>></button></a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <h3 class="pt-1">Customer Current Benefit</h3>
+                            <div class="row">
+                                <div class="col-2 current-benefit-header-id">Id</div>
+                                <div class="col-2">Benefit Id</div>
+                                <div class="col-2">Guaranteed Issue</div>
+                                <div class="col-1">Min Age Limit</div>
+                                <div class="col-1">Max Age Limit</div>
+                                <div class="col-1">Min Range</div>
+                                <div class="col-1">Max Range</div>
+                                <div class="col-2">Increments</div>
+                            </div>
+                            <!-- Current Customer Benefit -->
+                            <div class="accordion accordion-borderless" id="accordionFlushCustomerBenefit">
+                                <ng-container class="row" *ngIf="customerBenefit as benefit">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" attr.id="flush-heading-customer-benefit-{{benefit.id}}">
+                                            <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                                            attr.data-mdb-target="#flush-collapse-customer-benefit-{{benefit.id}}" aria-expanded="false" attr.aria-controls="flush-collapse-customer-benefit-{{benefit.id}}"
+                                            (click)="getCustomersBenefitHistory(customer.id)">
+                                                <!-- Current Customer Benefit -->
+                                                <div class="col-2">{{benefit.id}}</div>
+                                                <div class="col-2">{{benefit.benefitId}}</div>
+                                                <div class="col-2">{{benefit.guaranteedIssue | currency:'PHP'}}</div>
+                                                <div class="col-1 current-benefit-min-age-limit">{{benefit.minAgeLimit}}</div>
+                                                <div class="col-1 current-benefit-max-age-limit">{{benefit.maxAgeLimit}}</div>
+                                                <div class="col-1 current-benefit-min-range">{{benefit.minRange}}</div>
+                                                <div class="col-1 current-benefit-max-range">{{benefit.maxRange}}</div>
+                                                <div class="col-2 current-benefit-incremental">{{benefit.increments}}</div>
+                                            </button>
+                                        </h2>
+                                        <div attr.id="flush-collapse-customer-benefit-{{benefit.id}}" class="accordion-collapse collapse" attr.attr.aria-labelledby="flush-heading-customer-benefit-{{benefit.id}}"
+                                        data-mdb-parent="#accordionFlushCustomerBenefit">
+                                            <div class="accordion-body card">
+                                                <div class="row">
+                                                    <!-- Customer Benefit Histories -->
+                                                    <div class="col-12">
+                                                        <h3 class="pt-1">Customer Benefit History</h3>
+                                                        <div class="row pb-1">
+                                                            <div class="col-2">Id</div>
+                                                            <div class="col-2">Benefits Id</div>
+                                                            <div class="col-2">Guaranteed Issue</div>
+                                                            <div class="col-1">Min Age Limit</div>
+                                                            <div class="col-1">Max Age Limit</div>
+                                                            <div class="col-1">Min Range</div>
+                                                            <div class="col-1">Max Range</div>
+                                                            <div class="col-2">Increments</div>
+                                                        </div>
+                                                        <ng-container >
+                                                            <div class="row" *ngFor="let benefitHistory of customerBenefitHistories">
+                                                                <!-- Customer Benefit Histories -->
+                                                                <div class="col-2">{{benefitHistory.id}}</div>
+                                                                <div class="col-2">{{benefitHistory.customersCurrentBenefitsId}}</div>
+                                                                <div class="col-2">{{benefitHistory.guaranteedIssue | currency:'PHP'}}</div>
+                                                                <div class="col-1">{{benefitHistory.minAgeLimit}}</div>
+                                                                <div class="col-1">{{benefitHistory.maxAgeLimit}}</div>
+                                                                <div class="col-1">{{benefitHistory.minRange}}</div>
+                                                                <div class="col-1">{{benefitHistory.maxRange}}</div>
+                                                                <div class="col-1">{{benefitHistory.increments}}</div>
+                                                                <div class="col-1">
+                                                                    <button type="button" class="btn btn-outline-danger delete-customer-button" (click)="deleteCustomerBenefitHistory(benefitHistory.id)">X</button>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="customerHistories.length <= 0">
+                                                            <div class="row">
+                                                                <div class="col alert alert-warning">No history found</div>
+                                                            </div>
+                                                        </ng-container>
+                                                        <nav aria-label="Page navigation example">
+                                                            <ul class="pagination justify-content-center">
+                                                                <li class="page-item">
+                                                                    <a class="page-link" tabindex="-1" (click)="getCustomersBenefitHistories(-1, customer.id)"><button class="btn btn-light"><<</button></a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" (click)="getCustomersBenefitHistories(1, customer.id)"><button class="btn btn-light">>></button></a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <ng-container *ngIf="customers.length <= 0">
+            <div class="row">
+                <div class="col alert alert-warning">No customer found</div>
+            </div>
+        </ng-container>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" tabindex="-1" (click)="getCustomers(-1)"><button class="btn btn-light"><<</button></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" (click)="getCustomers(1)"><button class="btn btn-light">>></button></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

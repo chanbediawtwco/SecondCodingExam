@@ -14,6 +14,6 @@ namespace SecondCodingExam.Dto
 
         public int? BasicSalary { get; set; }
 
-        public DateTime? Birthdate { get; set; }
+        public DateTime Birthdate { get; set; }
     }
 }

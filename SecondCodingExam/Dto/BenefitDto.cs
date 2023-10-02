@@ -3,6 +3,7 @@
     public class BenefitDto
     {
         public int? Id { get; set; }
+
         public int? GuaranteedIssue { get; set; }
 
         public int? MaxAgeLimit { get; set; }

@@ -45,10 +45,11 @@ namespace SecondCodingExam.Services
             if (Benefit == null) throw new Exception(Constants.NoBenefitFound);
             return Benefit;
         }
-        public async Task<CustomersCurrentBenefit> GetCustomerCurrentBenefit(int CustomerId)
-            => await _context.CustomersCurrentBenefits.Where(x => x.CustomerId == CustomerId
-            && !x.IsDeleted)
-            .FirstAsync();
+        public async Task<CustomersCurrentBenefit?> GetCustomerCurrentBenefit(int CustomerId)
+            => await _context.CustomersCurrentBenefits
+            .Where(CustomersCurrentBenefit => CustomersCurrentBenefit.CustomerId == CustomerId
+            && !CustomersCurrentBenefit.IsDeleted)
+            .FirstOrDefaultAsync();
         public async Task<IAsyncEnumerable<Benefit>> GetBenefits(int PageNumber)
         {
             int UserId = await _jwtService.GetUserIdFromToken();
@@ -58,10 +59,6 @@ namespace SecondCodingExam.Services
                 .Take(Constants.PageSize)
                 .AsAsyncEnumerable());
         }
-        public async Task<int> GetCustomersBenefitsHistoryId(int CurrentBenefitId)
-            => await _context.CustomersBenefitsHistories.Where(x => x.CustomersCurrentBenefitsId == CurrentBenefitId)
-            .Select(x => x.Id)
-            .FirstOrDefaultAsync();
         private async Task<bool> IsValidBenefitInformation(BenefitDto Benefit)
         {
             ValidationResult BenefitValidator = await _benefitValidator.ValidateAsync(Benefit);
@@ -91,6 +88,7 @@ namespace SecondCodingExam.Services
             await _auditService.AddAuditStamp(Benefit, await _accountService.GetUserFullname(User), DateTime.Now, false);
             _context.Benefits.Add(Benefit);
             await _context.SaveChangesAsync();
+            _context.ChangeTracker.DetectChanges();
         }
         public async Task SaveCurrentBenefitChanges(CustomersCurrentBenefit CustomersCurrentBenefit, DateTime Timestamp, int? CustomerId = null)
         {
@@ -107,6 +105,7 @@ namespace SecondCodingExam.Services
                 _context.CustomersCurrentBenefits.Add(CustomersCurrentBenefit);
             }
             await _context.SaveChangesAsync();
+            _context.ChangeTracker.DetectChanges();
         }
         public async Task UpdateBenefit(BenefitDto UpdatedBenefit)
         {
@@ -122,13 +121,7 @@ namespace SecondCodingExam.Services
             DbBenefit.IsUpdated = true;
             await _auditService.AddAuditStamp(DbBenefit, await _accountService.GetUserFullname(User), Timestamp, true);
             await _context.SaveChangesAsync();
-        }
-        public async Task MapBenefitToBenefitHistory(CustomersCurrentBenefit CurrentBenefit, string UserFullname, DateTime Timestamp)
-        {
-            CustomersBenefitsHistory CustomersBenefitsHistory = _mapper.Map<CustomersBenefitsHistory>(CurrentBenefit);
-            await _auditService.AddAuditStamp(CustomersBenefitsHistory, UserFullname, Timestamp, true);
-            _context.CustomersBenefitsHistories.Add(CustomersBenefitsHistory);
-            await _context.SaveChangesAsync();
+            _context.ChangeTracker.DetectChanges();
         }
     }
 }

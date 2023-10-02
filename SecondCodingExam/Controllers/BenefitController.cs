@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecondCodingExam.Dto;
+using SecondCodingExam.Services;
 using SecondCodingExam.Services.Interface;
 
 namespace SecondCodingExam.Controllers
@@ -10,12 +11,12 @@ namespace SecondCodingExam.Controllers
     {
         private readonly IBenefitService _benefitService;
         private readonly ILogger<BenefitController> _logger;
-        public BenefitController(IBenefitService benefitService, 
-            ILogger<BenefitController> logger)
+        public BenefitController(
+            ILogger<BenefitController> logger,
+            IBenefitService benefitService)
         {
-            _benefitService = benefitService;
             _logger = logger;
-
+            _benefitService = benefitService;
         }
         [HttpGet]
         [Route("get/{pagenumber}")]
@@ -26,6 +27,20 @@ namespace SecondCodingExam.Controllers
                 return Ok(await _benefitService.GetBenefits(PageNumber));
             }
             catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Problem();
+            }
+        }
+        [HttpGet]
+        [Route("current/customer/get/{customerid}")]
+        public async Task<IActionResult> GetCurrentCustomerBenefit(int CustomerId)
+        {
+            try
+            {
+                return Ok(await _benefitService.GetCustomerCurrentBenefit(CustomerId));
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 return Problem();

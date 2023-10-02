@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand">
+      Second Coding Exam
+    </a>
+    <a type="button" 
+      class="navbar-toggler" 
+      data-toggle="collapse" 
+      data-target="#navbar-collapse" 
+      aria-controls="navbar-collapse" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation">
+      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"
+            class="rounded-circle"
+            height="22"
+            alt="Portrait of a Woman"
+            loading="lazy"/>
+    </a>
+
+    <!-- Menu that hides in small screen -->
+    <div class="collapse navbar-collapse" id="navbar-collapse" *ngIf="isLoggedIn">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a href="#" class="list-group-item list-group-item-action py-2 ripple nav-link"
+                    routerLink="/benefit" routerLinkActive="active" ariaCurrentWhenActive="page"
+                    data-mdb-toggle="collapse"
+                    aria-expanded="true"
+                    aria-controls="collapseExample1">
+                    <span>Benefit</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="list-group-item list-group-item-action py-2 ripple nav-link"
+                    routerLink="/customer" routerLinkActive="active" ariaCurrentWhenActive="page"
+                    data-mdb-toggle="collapse"
+                    aria-expanded="true"
+                    aria-controls="collapseExample1">
+                    <span>Customer</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-item" *ngIf="isLoggedIn">
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple nav-link" 
+            routerLinkActive="active" ariaCurrentWhenActive="page"
+            data-mdb-toggle="collapse"
+            aria-expanded="true"
+            aria-controls="collapseExample1"
+            (click)="logout()">
+            <span>Logout</span>
+        </a>
+    </div>
+  </div>
+</nav>

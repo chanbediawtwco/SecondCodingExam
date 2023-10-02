@@ -19,6 +19,8 @@ public partial class CustomersHistory
 
     public DateTime Birthdate { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public DateTime CreatedDate { get; set; }
 
     public string CreatedBy { get; set; } = null!;

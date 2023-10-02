@@ -83,6 +83,8 @@ builder.Services.AddTransient<ICalculationService, CalculationService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IPaginationService, PaginationService>();
 builder.Services.AddTransient<IBenefitService, BenefitService>();
+builder.Services.AddTransient<ICustomerHistoryService, CustomerHistoryService>();
+builder.Services.AddTransient<IBenefitHistoryService, BenefitHistoryService>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();

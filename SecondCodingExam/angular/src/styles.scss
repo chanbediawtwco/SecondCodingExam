@@ -1,0 +1,120 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$SecondCodingExam-primary: mat.define-palette(mat.$indigo-palette);
+$SecondCodingExam-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$SecondCodingExam-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$SecondCodingExam-theme: mat.define-light-theme((
+  color: (
+    primary: $SecondCodingExam-primary,
+    accent: $SecondCodingExam-accent,
+    warn: $SecondCodingExam-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($SecondCodingExam-theme);
+
+/* You can add global styles to this file, and also import other style files */
+// Form/Input Box Design
+.form-label {
+	font-size: 12px;
+	color: #4F4F4F;
+	margin: 0;
+	display: block;
+	opacity: 1;
+	-webkit-transition: .333s ease top, .333s ease opacity;
+	transition: .333s ease top, .333s ease opacity;
+}
+
+.form-control {
+	border-radius: 0;
+	border-color: #ccc;
+	border-width: 0 0 2px 0;
+   	border-style: none none solid none;
+   	box-shadow: none;
+}
+.form-control:focus {
+	box-shadow: none;
+	border-color: #4F4F4F;
+}
+
+.js-hide-label {
+	opacity: 0; 	
+	display: unset;
+}
+.js-unhide-label {
+	opacity: unset;
+	display: block;
+	transition: 1s;
+	color: #4F4F4F;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+	opacity: 0.8;
+}
+
+.loginlbl {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+// Loader
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
+
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+	animation: animatezoom 0.6s
+}
+
+.loader {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 3px solid currentColor;
+    border-right: 3px solid currentColor;
+    box-sizing: border-box;
+    animation: loader 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    color: rgb(25, 25, 25);
+    border-color: currentColor transparent transparent transparent;
+}
+@keyframes loader {
+    0% {
+    	transform: rotate(0deg);
+    }
+    100% {
+    	transform: rotate(360deg);
+	}
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
