@@ -72,7 +72,7 @@ namespace SecondCodingExam.Services
             DateTime Timestamp = DateTime.Now;
             await _customerHistoryService.MapCustomerHistoryData(DbCustomer, CustomersCurrentBenefit, Timestamp);
             DbCustomer = _mapper.Map<CustomerDto, Customer>(NewCustomerInformation, DbCustomer);
-            await AddAuditStampToCustomer(DbCustomer, await _accountService.GetUserFullname(User), Timestamp, true, CustomersCurrentBenefit.BenefitId);
+            await AddAuditStampToCustomer(DbCustomer, await _accountService.GetUserFullname(User), Timestamp, true, CustomersCurrentBenefit.Id);
             await UpdateCurrentBenefit(CustomersCurrentBenefit, await _benefitService.GetBenefitById(Convert.ToInt32(NewCustomerInformation.BenefitId)), Timestamp);
             await _calculationService.CalculateBenefits(CustomersCurrentBenefit, DbCustomer);
             _context.ChangeTracker.DetectChanges();
