@@ -24,7 +24,7 @@ namespace SecondCodingExam.Controllers
         {
             try
             {
-                return Ok(await _benefitService.GetBenefits(PageNumber));
+                return Ok(await _benefitService.GetBenefitsAsync(PageNumber));
             }
             catch(Exception ex)
             {
@@ -38,7 +38,7 @@ namespace SecondCodingExam.Controllers
         {
             try
             {
-                return Ok(await _benefitService.GetAllBenefits());
+                return Ok(await _benefitService.GetBenefitsAsync(null));
             }
             catch(Exception ex)
             {
@@ -52,7 +52,7 @@ namespace SecondCodingExam.Controllers
         {
             try
             {
-                return Ok(await _benefitService.GetCustomerCurrentBenefit(CustomerId));
+                return Ok(await _benefitService.GetCustomerCurrentBenefitByDto(CustomerId));
             }
             catch (Exception ex)
             {

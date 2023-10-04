@@ -7,6 +7,7 @@
 	<SpaRoot>angular\</SpaRoot>
     <SpaProxyServerUrl>https://localhost:42200</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <UserSecretsId>c63ad0b7-7e1f-4dea-9d8e-f6720be5d3a3</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

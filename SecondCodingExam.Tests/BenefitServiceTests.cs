@@ -33,7 +33,7 @@ namespace SecondCodingExam.Tests
         {
             var MockBenefitService = new BenefitService(null, null, null, null, null, null, null);
 
-            var Result = MockBenefitService.GetBenefits(1);
+            var Result = MockBenefitService.GetBenefitsAsync(1);
 
             Assert.NotNull(Result);
         }
@@ -42,7 +42,7 @@ namespace SecondCodingExam.Tests
         {
             var MockBenefitService = new BenefitService(null, null, null, null, null, null, null);
 
-            var Result = MockBenefitService.GetAllBenefits();
+            var Result = MockBenefitService.GetBenefitsAsync(null);
 
             Assert.NotNull(Result);
         }

@@ -110,6 +110,22 @@ namespace SecondCodingExam.Mapper
                 .ForMember(CustomersHistory => CustomersHistory.Id, Option => Option.Ignore())
                 .ForMember(CustomersHistory => CustomersHistory.CustomerId,
                 Option => Option.MapFrom(Customer => Customer.Id));
+            CreateMap<Benefit, BenefitDto>()
+                .ForMember(BenefitDto => BenefitDto.Id,
+                Option => Option.MapFrom(Benefit => Benefit.Id))
+                .ForMember(BenefitDto => BenefitDto.GuaranteedIssue,
+                Option => Option.MapFrom(Benefit => Benefit.GuaranteedIssue))
+                .ForMember(BenefitDto => BenefitDto.MaxAgeLimit,
+                Option => Option.MapFrom(Benefit => Benefit.MaxAgeLimit))
+                .ForMember(BenefitDto => BenefitDto.MinAgeLimit,
+                Option => Option.MapFrom(Benefit => Benefit.MinAgeLimit))
+                .ForMember(BenefitDto => BenefitDto.MaxRange,
+                Option => Option.MapFrom(Benefit => Benefit.MaxRange))
+                .ForMember(BenefitDto => BenefitDto.MinRange,
+                Option => Option.MapFrom(Benefit => Benefit.MinRange))
+                .ForMember(BenefitDto => BenefitDto.Increments,
+                Option => Option.MapFrom(Benefit => Benefit.Increments));
+            CreateMap<CustomersCurrentBenefit, CustomersCurrentBenefitDto>();
         }
     }
 }

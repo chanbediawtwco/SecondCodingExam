@@ -50,20 +50,32 @@ namespace SecondCodingExam.Services
             .Where(CustomersCurrentBenefit => CustomersCurrentBenefit.CustomerId == CustomerId
             && !CustomersCurrentBenefit.IsDeleted)
             .FirstOrDefaultAsync();
-        public async Task<IAsyncEnumerable<Benefit>> GetBenefits(int PageNumber)
+        public async Task<CustomersCurrentBenefitDto?> GetCustomerCurrentBenefitByDto(int CustomerId)
+            => await Task.FromResult(_mapper.Map<CustomersCurrentBenefitDto>(await GetCustomerCurrentBenefit(CustomerId)));
+        public async Task<IAsyncEnumerable<BenefitDto>> GetBenefitsAsync(int? PageNumber)
         {
             int UserId = await _jwtService.GetUserIdFromToken();
+            List<BenefitDto> BenefitsDtoList = new List<BenefitDto>();
+            var Benefits = PageNumber == null ? await GetAllBenefitsAsyncEnum(UserId) : await GetBenefitsAsyncEnumWithPagination(UserId, Convert.ToInt32(PageNumber));
+            await foreach(var Benefit in Benefits)
+            {
+                BenefitDto BenefitDto = _mapper.Map<BenefitDto>(Benefit);
+                BenefitsDtoList.Add(BenefitDto);
+            }
+            return BenefitsDtoList.ToAsyncEnumerable();
+        }
+        private async Task<IAsyncEnumerable<Benefit>> GetAllBenefitsAsyncEnum(int UserId)
+        {
+            return await Task.FromResult(_context.Benefits
+                .Where(Benefit => Benefit.UserId == UserId && !Benefit.IsDeleted)
+                .AsAsyncEnumerable());
+        }
+        private async Task<IAsyncEnumerable<Benefit>> GetBenefitsAsyncEnumWithPagination(int UserId, int PageNumber)
+        {
             return await Task.FromResult(_context.Benefits
                 .Where(Benefit => Benefit.UserId == UserId && !Benefit.IsDeleted)
                 .Skip(_paginationService.GetPageNumber(PageNumber))
                 .Take(Constants.PageSize)
-                .AsAsyncEnumerable());
-        }
-        public async Task<IAsyncEnumerable<Benefit>> GetAllBenefits()
-        {
-            int UserId = await _jwtService.GetUserIdFromToken();
-            return await Task.FromResult(_context.Benefits
-                .Where(Benefit => Benefit.UserId == UserId && !Benefit.IsDeleted)
                 .AsAsyncEnumerable());
         }
         private async Task<bool> IsValidBenefitInformation(BenefitDto Benefit)
