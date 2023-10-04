@@ -44,6 +44,7 @@ namespace SecondCodingExam.Services
         public async Task<IAsyncEnumerable<BenefitsHistory>> GetBenefitHistories(int BenefitId, int PageNumber)
             => await Task.FromResult(_context.BenefitsHistories
             .Where(BenefitHistory => BenefitHistory.BenefitId == BenefitId && !BenefitHistory.IsDeleted)
+            .OrderByDescending(BenefitHistory => BenefitHistory.ModifiedDate)
             .Skip(_paginationService.GetPageNumber(PageNumber))
             .Take(Constants.PageSize)
             .AsAsyncEnumerable());

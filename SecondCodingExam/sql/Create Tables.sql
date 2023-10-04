@@ -151,9 +151,10 @@ BEGIN
 		Multiple INT NOT NULL,
 		BenefitsAmountQuotation INT NOT NULL,
 		PendedAmount INT NOT NULL,
-		CurrentBenefit NVARCHAR(255) NOT NULL,
+		CurrentBenefit INT NOT NULL,
 		CreatedDate DATETIME NOT NULL,
 		ModifiedDate DATETIME,
+		IsBenefitPending BIT DEFAULT 0 NOT NULL,
 		IsRecalculated BIT DEFAULT 0 NOT NULL
 	)
 END
@@ -168,7 +169,8 @@ BEGIN
 		Multiple INT NOT NULL,
 		BenefitsAmountQuotation INT NOT NULL,
 		PendedAmount INT NOT NULL,
-		CurrentBenefit NVARCHAR(255) NOT NULL,
+		CurrentBenefit INT NOT NULL,
+		IsBenefitPending BIT DEFAULT 0 NOT NULL,
 		CreatedDate DATETIME NOT NULL,
 		ModifiedDate DATETIME NOT NULL
 	)

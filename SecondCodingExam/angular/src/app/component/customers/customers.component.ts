@@ -41,6 +41,7 @@ export class CustomersComponent {
   customerBenefitHistories: ICustomerBenefitHistory[] = [];
   isAddCustomerShown: boolean = false;
   hasError: boolean = false;
+  forApproval: string = Constants.ForApproval;
 
   ngOnInit(){
     this.getCustomers(this.pageNumber);

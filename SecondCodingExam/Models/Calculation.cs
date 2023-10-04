@@ -17,11 +17,13 @@ public partial class Calculation
 
     public int PendedAmount { get; set; }
 
-    public string CurrentBenefit { get; set; } = null!;
+    public int CurrentBenefit { get; set; }
 
     public DateTime CreatedDate { get; set; }
 
     public DateTime? ModifiedDate { get; set; }
+
+    public bool IsBenefitPending { get; set; }
 
     public bool IsRecalculated { get; set; }
 
