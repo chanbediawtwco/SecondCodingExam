@@ -44,6 +44,7 @@ namespace SecondCodingExam.Services
             => await Task.FromResult(_context.CustomersHistories
                 .Where(CustomerHistories => CustomerHistories.CustomerId == CustomerId
                 && !CustomerHistories.IsDeleted)
+                .OrderByDescending(CustomerHistories => CustomerHistories.ModifiedDate)
                 .Skip(_paginationService.GetPageNumber(PageNumber))
                 .Take(Constants.PageSize)
                 .AsAsyncEnumerable());

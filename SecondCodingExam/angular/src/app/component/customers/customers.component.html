@@ -320,15 +320,15 @@
                                     <div class="col">{{calculation.id}}</div>
                                     <div class="col">{{calculation.multiple}}</div>
                                     <div class="col">{{calculation.benefitsAmountQuotation | currency:'PHP'}}</div>
+                                    <div class="col">{{calculation.pendedAmount | currency:'PHP'}}</div>
                                     <div class="col">
-                                        <ng-container *ngIf="calculation.currentBenefit != 'For Approval'">
+                                        <ng-container *ngIf="!calculation.isBenefitPending">
                                             {{calculation.currentBenefit | currency:'PHP'}}
                                         </ng-container>
-                                        <ng-container *ngIf="calculation.currentBenefit == 'For Approval'">
-                                            {{calculation.currentBenefit}}
+                                        <ng-container *ngIf="calculation.isBenefitPending">
+                                            {{forApproval}}
                                         </ng-container>
                                     </div>
-                                    <div class="col">{{calculation.currentBenefit}}</div>
                                 </div>
                             </div>
                             <div class="accordion-body card">
@@ -345,13 +345,13 @@
                                     <div class="col-1">{{calculationsHistory.id}}</div>
                                     <div class="col-1">{{calculationsHistory.multiple}}</div>
                                     <div class="col-2">{{calculationsHistory.benefitsAmountQuotation | currency:'PHP'}}</div>
-                                    <div class="col-2">{{calculationsHistory.pendedAmount}}</div>
+                                    <div class="col-2">{{calculationsHistory.pendedAmount | currency:'PHP'}}</div>
                                     <div class="col-2">
-                                        <ng-container *ngIf="calculationsHistory.currentBenefit != 'For Approval'">
+                                        <ng-container *ngIf="!calculationsHistory.isBenefitPending">
                                             {{calculationsHistory.currentBenefit | currency:'PHP'}}
                                         </ng-container>
-                                        <ng-container *ngIf="calculationsHistory.currentBenefit == 'For Approval'">
-                                            {{calculationsHistory.currentBenefit}}
+                                        <ng-container *ngIf="calculationsHistory.isBenefitPending">
+                                            {{forApproval}}
                                         </ng-container>
                                     </div>
                                     <div class="col-4">{{calculationsHistory.modifiedDate | date:'shortDate'}} {{calculationsHistory.modifiedDate | date:'shortTime'}}</div>
@@ -378,7 +378,7 @@
             </div>
         </ng-container>
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
+            <ul class="pagination justify-content-center pb-5">
                 <li class="page-item">
                     <a class="page-link" tabindex="-1" (click)="getCustomers(-1)"><button class="btn btn-light"><<</button></a>
                 </li>

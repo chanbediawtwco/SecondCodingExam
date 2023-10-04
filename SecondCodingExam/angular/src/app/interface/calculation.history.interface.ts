@@ -5,7 +5,8 @@ export interface ICalculationHistory {
     multiple?: number,
     benefitsAmountQuotation?: number,
     pendedAmount?: number,
-    currentBenefit?: string,
+    currentBenefit?: number,
+    isBenefitPending: boolean,
     createdDate: Date,
     modifiedDate: Date
 }

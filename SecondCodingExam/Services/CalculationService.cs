@@ -40,40 +40,37 @@ namespace SecondCodingExam.Services
         }
         public async Task CalculateBenefits(CustomersCurrentBenefit CustomersCurrentBenefit, Customer Customer)
         {
+            var BenefitAmount = CustomersCurrentBenefit.GuaranteedIssue;
             for (var Multiple = CustomersCurrentBenefit.MinRange; Multiple <= CustomersCurrentBenefit.MaxRange; Multiple += CustomersCurrentBenefit.Increments)
             {
                 Calculation NewCalculation = new Calculation();
-                await MapNewCalculation(NewCalculation, Customer, CustomersCurrentBenefit, Multiple);
+                await MapNewCalculation(NewCalculation, Customer, CustomersCurrentBenefit, Multiple, BenefitAmount);
                 await _context.Calculations.AddAsync(NewCalculation);
             }
             await _context.SaveChangesAsync();
         }
-        private async Task MapNewCalculation(Calculation NewCalculation, Customer Customer, CustomersCurrentBenefit Benefit, int Multiple)
+        private async Task MapNewCalculation(Calculation NewCalculation, Customer Customer, CustomersCurrentBenefit Benefit, int Multiple, int BenefitAmount)
         {
             NewCalculation.Multiple = Multiple;
             NewCalculation.CustomersCurrentBenefitsId = Benefit.Id;
             NewCalculation.CustomerId = Customer.Id;
             NewCalculation.CreatedDate = Customer.CreatedDate;
             NewCalculation.BenefitsAmountQuotation = await CalculateBenefitsAmountQuotation(NewCalculation, Customer);
-            NewCalculation.PendedAmount = await IsEligible(Benefit, Customer, NewCalculation) ? await CalculatePendedAmount(NewCalculation, Benefit) : 0;
-            NewCalculation.CurrentBenefit = await IsEligible(Benefit, Customer, NewCalculation) ? Constants.ForApproval : (await CalculatePendedAmount(NewCalculation, Benefit)).ToString();
+            NewCalculation.PendedAmount = await IsEligible(Benefit, Customer, NewCalculation, BenefitAmount) ? await CalculatePendedAmount(NewCalculation, Benefit) : 0;
+            NewCalculation.CurrentBenefit = await IsEligible(Benefit, Customer, NewCalculation, BenefitAmount) ? 0 : await CalculateBenefitsAmountQuotation(NewCalculation, Customer);
+            NewCalculation.IsBenefitPending = await IsEligible(Benefit, Customer, NewCalculation, BenefitAmount);
+            BenefitAmount = BenefitAmount - await CalculateBenefitsAmountQuotation(NewCalculation, Customer);
         }
-        private async Task<bool> IsEligible(CustomersCurrentBenefit Benefit, Customer Customer, Calculation NewCalculation)
-            => await Task.FromResult(await IsAgeWithinAgeLimit(await GetCustomersAge(Customer, Customer.CreatedDate), Benefit) && await CalculatePendedAmount(NewCalculation, Benefit) > Benefit.GuaranteedIssue);
+        private async Task<bool> IsEligible(CustomersCurrentBenefit Benefit, Customer Customer, Calculation NewCalculation, int BenefitAmount)
+            => await Task.FromResult(await IsAgeWithinAgeLimit(await GetCustomersAge(Customer, Customer.CreatedDate), Benefit) && await CalculateBenefitsAmountQuotation(NewCalculation, Customer) > BenefitAmount);
         private async Task<bool> IsAgeWithinAgeLimit(int CustomersAge, CustomersCurrentBenefit Benefit)
             => await Task.FromResult(Benefit.MinAgeLimit <= CustomersAge && CustomersAge <= Benefit.MaxAgeLimit);
-        private async Task<int> ConvertDaysToYears(int DaysCount)
-        {
-            return await Task.FromResult(DaysCount / 365);
-        }
         private async Task<int> CalculatePendedAmount(Calculation NewCalculation, CustomersCurrentBenefit Benefit)
-        {
-            return await Task.FromResult(NewCalculation.BenefitsAmountQuotation - Benefit.GuaranteedIssue);
-        }
+            => await Task.FromResult(NewCalculation.BenefitsAmountQuotation - Benefit.GuaranteedIssue);
         private async Task<int> CalculateBenefitsAmountQuotation(Calculation NewCalculation, Customer Customer)
-        {
-            return await Task.FromResult(Customer.BasicSalary * NewCalculation.Multiple);
-        }
+            => await Task.FromResult(Customer.BasicSalary * NewCalculation.Multiple);
+        private async Task<int> ConvertDaysToYears(int DaysCount)
+            => await Task.FromResult(DaysCount / 365);
         private async Task<int> CountDaysBetweenTwoDates(DateTime Date1, DateTime Date2)
         {
             Double DateDifference = (Date1 - Date2).TotalDays;

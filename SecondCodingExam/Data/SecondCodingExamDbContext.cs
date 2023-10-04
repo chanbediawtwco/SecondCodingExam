@@ -38,7 +38,7 @@ public partial class SecondCodingExamDbContext : DbContext
     {
         modelBuilder.Entity<Benefit>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Benefits__3214EC07416C8CB9");
+            entity.HasKey(e => e.Id).HasName("PK__Benefits__3214EC0799DB1948");
 
             entity.Property(e => e.CreatedBy).HasMaxLength(255);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
@@ -48,12 +48,12 @@ public partial class SecondCodingExamDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Benefits)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Benefits__UserId__69B1A35C");
+                .HasConstraintName("FK__Benefits__UserId__13A7DD28");
         });
 
         modelBuilder.Entity<BenefitsHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Benefits__3214EC07E1A1F485");
+            entity.HasKey(e => e.Id).HasName("PK__Benefits__3214EC07CEE5236E");
 
             entity.Property(e => e.BenefitCreatedBy).HasMaxLength(255);
             entity.Property(e => e.BenefitCreatedDate).HasColumnType("datetime");
@@ -63,55 +63,53 @@ public partial class SecondCodingExamDbContext : DbContext
             entity.HasOne(d => d.Benefit).WithMany(p => p.BenefitsHistories)
                 .HasForeignKey(d => d.BenefitId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__BenefitsH__Benef__6F6A7CB2");
+                .HasConstraintName("FK__BenefitsH__Benef__1960B67E");
 
             entity.HasOne(d => d.User).WithMany(p => p.BenefitsHistories)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__BenefitsH__UserI__6E765879");
+                .HasConstraintName("FK__BenefitsH__UserI__186C9245");
         });
 
         modelBuilder.Entity<Calculation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Calculat__3214EC07F9DBD225");
+            entity.HasKey(e => e.Id).HasName("PK__Calculat__3214EC078A438256");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.CurrentBenefit).HasMaxLength(255);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Calculations)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Calculati__Custo__0A1E72EE");
+                .HasConstraintName("FK__Calculati__Custo__3414ACBA");
 
             entity.HasOne(d => d.CustomersCurrentBenefits).WithMany(p => p.Calculations)
                 .HasForeignKey(d => d.CustomersCurrentBenefitsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Calculati__Custo__092A4EB5");
+                .HasConstraintName("FK__Calculati__Custo__33208881");
         });
 
         modelBuilder.Entity<CalculationsHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Calculat__3214EC07779D7A0D");
+            entity.HasKey(e => e.Id).HasName("PK__Calculat__3214EC0787208839");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.CurrentBenefit).HasMaxLength(255);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.CalculationsHistories)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Calculati__Custo__0EE3280B");
+                .HasConstraintName("FK__Calculati__Custo__39CD8610");
 
             entity.HasOne(d => d.CustomersCurrentBenefits).WithMany(p => p.CalculationsHistories)
                 .HasForeignKey(d => d.CustomersCurrentBenefitsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Calculati__Custo__0DEF03D2");
+                .HasConstraintName("FK__Calculati__Custo__38D961D7");
         });
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC073B4BCC39");
+            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC0789315174");
 
             entity.Property(e => e.Birthdate).HasColumnType("datetime");
             entity.Property(e => e.CreatedBy).HasMaxLength(255);
@@ -124,12 +122,12 @@ public partial class SecondCodingExamDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Customers)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__UserI__733B0D96");
+                .HasConstraintName("FK__Customers__UserI__1D314762");
         });
 
         modelBuilder.Entity<CustomersBenefitsHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC076F755BEE");
+            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC07EE5D1E10");
 
             entity.Property(e => e.BenefitCreatedBy).HasMaxLength(255);
             entity.Property(e => e.BenefitCreatedDate).HasColumnType("datetime");
@@ -139,22 +137,22 @@ public partial class SecondCodingExamDbContext : DbContext
             entity.HasOne(d => d.Customer).WithMany(p => p.CustomersBenefitsHistories)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__Custo__009508B4");
+                .HasConstraintName("FK__Customers__Custo__2A8B4280");
 
             entity.HasOne(d => d.CustomersCurrentBenefits).WithMany(p => p.CustomersBenefitsHistories)
                 .HasForeignKey(d => d.CustomersCurrentBenefitsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__Custo__7FA0E47B");
+                .HasConstraintName("FK__Customers__Custo__29971E47");
 
             entity.HasOne(d => d.User).WithMany(p => p.CustomersBenefitsHistories)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__UserI__7EACC042");
+                .HasConstraintName("FK__Customers__UserI__28A2FA0E");
         });
 
         modelBuilder.Entity<CustomersCurrentBenefit>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC07CFCC45FD");
+            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC073E4C2D59");
 
             entity.Property(e => e.CreatedBy).HasMaxLength(255);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
@@ -164,22 +162,22 @@ public partial class SecondCodingExamDbContext : DbContext
             entity.HasOne(d => d.Benefit).WithMany(p => p.CustomersCurrentBenefits)
                 .HasForeignKey(d => d.BenefitId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__Benef__78F3E6EC");
+                .HasConstraintName("FK__Customers__Benef__22EA20B8");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.CustomersCurrentBenefits)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__Custo__79E80B25");
+                .HasConstraintName("FK__Customers__Custo__23DE44F1");
 
             entity.HasOne(d => d.User).WithMany(p => p.CustomersCurrentBenefits)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__UserI__77FFC2B3");
+                .HasConstraintName("FK__Customers__UserI__21F5FC7F");
         });
 
         modelBuilder.Entity<CustomersHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC07E5ED3DFD");
+            entity.HasKey(e => e.Id).HasName("PK__Customer__3214EC07C2F7CAE6");
 
             entity.Property(e => e.Birthdate).HasColumnType("datetime");
             entity.Property(e => e.CreatedBy).HasMaxLength(255);
@@ -192,17 +190,17 @@ public partial class SecondCodingExamDbContext : DbContext
             entity.HasOne(d => d.Customer).WithMany(p => p.CustomersHistories)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__Custo__04659998");
+                .HasConstraintName("FK__Customers__Custo__2E5BD364");
 
             entity.HasOne(d => d.CustomersBenefitsHistory).WithMany(p => p.CustomersHistories)
                 .HasForeignKey(d => d.CustomersBenefitsHistoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Customers__Custo__0559BDD1");
+                .HasConstraintName("FK__Customers__Custo__2F4FF79D");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC0792C26DDE");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC075083930D");
 
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.Firstname).HasMaxLength(255);

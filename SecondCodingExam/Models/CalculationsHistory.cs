@@ -17,7 +17,9 @@ public partial class CalculationsHistory
 
     public int PendedAmount { get; set; }
 
-    public string CurrentBenefit { get; set; } = null!;
+    public int CurrentBenefit { get; set; }
+
+    public bool IsBenefitPending { get; set; }
 
     public DateTime CreatedDate { get; set; }
 

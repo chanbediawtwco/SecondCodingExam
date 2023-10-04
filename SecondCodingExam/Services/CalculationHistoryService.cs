@@ -20,8 +20,9 @@ namespace SecondCodingExam.Services
         public async Task<IAsyncEnumerable<CalculationsHistory>> GetCalculationHistory(int CustomerId, int PageNumber)
             => await Task.FromResult(_context.CalculationsHistories
                 .Where(Calculation => Calculation.CustomerId == CustomerId)
-                        .Skip(_paginationService.GetPageNumber(PageNumber))
-                        .Take(Constants.PageSize)
-            .AsAsyncEnumerable());
+                .OrderByDescending(Calculation => Calculation.ModifiedDate)
+                .Skip(_paginationService.GetPageNumber(PageNumber))
+                .Take(Constants.PageSize)
+                .AsAsyncEnumerable());
     }
 }
