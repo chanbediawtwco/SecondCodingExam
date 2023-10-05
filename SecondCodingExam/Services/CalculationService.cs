@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SecondCodingExam.Data;
+using SecondCodingExam.Dto;
 using SecondCodingExam.Models;
 using SecondCodingExam.Services.Interface;
 
@@ -16,6 +17,17 @@ namespace SecondCodingExam.Services
         {
             _mapper = mapper;
             _context = context;
+        }
+        public async Task<IAsyncEnumerable<CalculationDto>> GetCalculationsList(int CustomerId)
+        {
+            List<CalculationDto> CalculationDtoList = new List<CalculationDto>();
+            var Calculations = GetCurrentCalculation(CustomerId);
+            await foreach (var Calculation in await Calculations)
+            {
+                CalculationDto CalculationDto = _mapper.Map<CalculationDto>(Calculation);
+                CalculationDtoList.Add(CalculationDto);
+            }
+            return CalculationDtoList.ToAsyncEnumerable();
         }
         public async Task<IAsyncEnumerable<Calculation>> GetCalculations(int BenefitId, int CustomerId)
             => await Task.FromResult(_context.Calculations.Where(Calculation =>

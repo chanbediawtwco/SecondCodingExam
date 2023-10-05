@@ -144,6 +144,44 @@ namespace SecondCodingExam.Mapper
                 .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.Increments,
                 Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.Increments));
             CreateMap<BenefitsHistory, BenefitsHistoryDto>();
+            CreateMap<Calculation, CalculationDto>()
+                .ForMember(CalculationsHistory => CalculationsHistory.Id,
+                Option => Option.MapFrom(Calculation => Calculation.Id))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomersCurrentBenefitsId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomersCurrentBenefitsId))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomerId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomerId))
+                .ForMember(CalculationsHistory => CalculationsHistory.Multiple,
+                Option => Option.MapFrom(Calculation => Calculation.Multiple))
+                .ForMember(CalculationsHistory => CalculationsHistory.BenefitsAmountQuotation,
+                Option => Option.MapFrom(Calculation => Calculation.BenefitsAmountQuotation))
+                .ForMember(CalculationsHistory => CalculationsHistory.PendedAmount,
+                Option => Option.MapFrom(Calculation => Calculation.PendedAmount))
+                .ForMember(CalculationsHistory => CalculationsHistory.CurrentBenefit,
+                Option => Option.MapFrom(Calculation => Calculation.CurrentBenefit))
+                .ForMember(CalculationsHistory => CalculationsHistory.IsBenefitPending,
+                Option => Option.MapFrom(Calculation => Calculation.IsBenefitPending));
+            CreateMap<CalculationsHistory, CalculationsHistoryDto>()
+                .ForMember(CalculationsHistory => CalculationsHistory.Id,
+                Option => Option.MapFrom(Calculation => Calculation.Id))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomersCurrentBenefitsId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomersCurrentBenefitsId))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomerId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomerId))
+                .ForMember(CalculationsHistory => CalculationsHistory.Multiple,
+                Option => Option.MapFrom(Calculation => Calculation.Multiple))
+                .ForMember(CalculationsHistory => CalculationsHistory.BenefitsAmountQuotation,
+                Option => Option.MapFrom(Calculation => Calculation.BenefitsAmountQuotation))
+                .ForMember(CalculationsHistory => CalculationsHistory.PendedAmount,
+                Option => Option.MapFrom(Calculation => Calculation.PendedAmount))
+                .ForMember(CalculationsHistory => CalculationsHistory.CurrentBenefit,
+                Option => Option.MapFrom(Calculation => Calculation.CurrentBenefit))
+                .ForMember(CalculationsHistory => CalculationsHistory.IsBenefitPending,
+                Option => Option.MapFrom(Calculation => Calculation.IsBenefitPending))
+                .ForMember(CalculationsHistory => CalculationsHistory.CreatedDate,
+                Option => Option.MapFrom(Calculation => Calculation.CreatedDate))
+                .ForMember(CalculationsHistory => CalculationsHistory.ModifiedDate,
+                Option => Option.MapFrom(Calculation => Calculation.ModifiedDate));
         }
     }
 }
