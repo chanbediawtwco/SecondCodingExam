@@ -68,7 +68,7 @@ namespace SecondCodingExam.Services
         {
             CustomersHistory CustomerHistory = await Task.FromResult(_mapper.Map<CustomersHistory>(Customer));
             CustomerHistory.CustomersBenefitsHistoryId = await _benefitHistoryService.GetCustomersBenefitsHistoryId(CurrentBenefit.BenefitId);
-            await _auditService.AddAuditStamp(CustomerHistory, UserFullname, Timestamp, true);
+            await CustomerHistory.AddAuditStamp(UserFullname, Timestamp, true);
             _context.CustomersHistories.Add(CustomerHistory);
         }
     }

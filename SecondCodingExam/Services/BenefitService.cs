@@ -95,7 +95,7 @@ namespace SecondCodingExam.Services
             User User = await _accountService.GetUserById(await _jwtService.GetUserIdFromToken());
             Benefit DbBenefit = await GetBenefitById(BenefitId);
             DbBenefit.IsDeleted = true;
-            await _auditService.AddAuditStamp(DbBenefit, await _accountService.GetUserFullname(User), DateTime.Now, true);
+            await DbBenefit.AddAuditStamp(await _accountService.GetUserFullname(User), DateTime.Now, true);
             await _context.SaveChangesAsync();
         }
         public async Task SaveBenefit(BenefitDto NewBenefit)
@@ -104,7 +104,7 @@ namespace SecondCodingExam.Services
             User User = await _accountService.GetUserById(await _jwtService.GetUserIdFromToken());
             Benefit Benefit = _mapper.Map<Benefit>(NewBenefit);
             Benefit.UserId = User.Id;
-            await _auditService.AddAuditStamp(Benefit, await _accountService.GetUserFullname(User), DateTime.Now, false);
+            await Benefit.AddAuditStamp(await _accountService.GetUserFullname(User), DateTime.Now, false);
             _context.Benefits.Add(Benefit);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.DetectChanges();
@@ -117,7 +117,7 @@ namespace SecondCodingExam.Services
             string UserFullname = await _accountService.GetUserFullname(
                                     await _accountService.GetUserById(
                                         await _jwtService.GetUserIdFromToken()));
-            await _auditService.AddAuditStamp(CustomersCurrentBenefit, UserFullname, Timestamp, IsUpdating);
+            await CustomersCurrentBenefit.AddAuditStamp(UserFullname, Timestamp, IsUpdating);
             if (!IsUpdating)
             {
                 CustomersCurrentBenefit.CustomerId = Convert.ToInt32(CustomerId);
@@ -134,11 +134,11 @@ namespace SecondCodingExam.Services
             if(!await HasBenefitChanges(UpdatedBenefit, DbBenefit)) throw new Exception(Constants.NoChangesFound);
             BenefitsHistory BenefitsHistory = _mapper.Map<BenefitsHistory>(DbBenefit);
             DateTime Timestamp = DateTime.Now;
-            await _auditService.AddAuditStamp(BenefitsHistory, await _accountService.GetUserFullname(User), Timestamp, true);
+            await BenefitsHistory.AddAuditStamp(await _accountService.GetUserFullname(User), Timestamp, true);
             _context.BenefitsHistories.Add(BenefitsHistory);
             DbBenefit = _mapper.Map<BenefitDto, Benefit>(UpdatedBenefit, DbBenefit);
             DbBenefit.IsUpdated = true;
-            await _auditService.AddAuditStamp(DbBenefit, await _accountService.GetUserFullname(User), Timestamp, true);
+            await DbBenefit.AddAuditStamp(await _accountService.GetUserFullname(User), DateTime.Now, true);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.DetectChanges();
         }

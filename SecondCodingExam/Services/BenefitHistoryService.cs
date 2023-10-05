@@ -61,7 +61,7 @@ namespace SecondCodingExam.Services
             User User = await _accountService.GetUserById(await _jwtService.GetUserIdFromToken());
             BenefitsHistory DbBenefit = await GetBenefitHistoriesById(BenefitId);
             DbBenefit.IsDeleted = true;
-            await _auditService.AddAuditStamp(DbBenefit, await _accountService.GetUserFullname(User), DateTime.Now, true);
+            await DbBenefit.AddAuditStamp(await _accountService.GetUserFullname(User), DateTime.Now, true);
             await _context.SaveChangesAsync();
         }
         public async Task DeleteCustomerBenefitHistory(int CustomerBenefitHistoryId)
@@ -69,13 +69,13 @@ namespace SecondCodingExam.Services
             User User = await _accountService.GetUserById(await _jwtService.GetUserIdFromToken());
             CustomersBenefitsHistory DbCustomersBenefitsHistory = await GetCustomersBenefitHistoryById(CustomerBenefitHistoryId);
             DbCustomersBenefitsHistory.IsDeleted = true;
-            await _auditService.AddAuditStamp(DbCustomersBenefitsHistory, await _accountService.GetUserFullname(User), DateTime.Now, true);
+            await DbCustomersBenefitsHistory.AddAuditStamp(await _accountService.GetUserFullname(User), DateTime.Now, true);
             await _context.SaveChangesAsync();
         }
         public async Task MapBenefitToBenefitHistory(CustomersCurrentBenefit CurrentBenefit, string UserFullname, DateTime Timestamp)
         {
             CustomersBenefitsHistory CustomersBenefitsHistory = _mapper.Map<CustomersBenefitsHistory>(CurrentBenefit);
-            await _auditService.AddAuditStamp(CustomersBenefitsHistory, UserFullname, Timestamp, true);
+            await CustomersBenefitsHistory.AddAuditStamp(UserFullname, Timestamp, true);
             _context.CustomersBenefitsHistories.Add(CustomersBenefitsHistory);
             await _context.SaveChangesAsync();
         }

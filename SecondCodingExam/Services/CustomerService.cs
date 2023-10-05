@@ -126,7 +126,7 @@ namespace SecondCodingExam.Services
         }
         private async Task AddAuditStampToCustomer(Customer Customer, string UserFullname, DateTime Timestamp, bool IsModified, int? BenefitId = null)
         {
-            await _auditService.AddAuditStamp(Customer, UserFullname, Timestamp, IsModified);
+            await Customer.AddAuditStamp(UserFullname, Timestamp, IsModified);
             if (BenefitId != null) await _auditService.AddAuditStampToCalculation(await _calculationService.GetCalculations(Convert.ToInt32(BenefitId), Customer.Id), Timestamp);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.DetectChanges();
