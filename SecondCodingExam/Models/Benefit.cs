@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SecondCodingExam.Services;
+using System;
 using System.Collections.Generic;
 
 namespace SecondCodingExam.Models;
 
-public partial class Benefit
+public partial class Benefit: GenericAuditClass
 {
     public int Id { get; set; }
 
@@ -24,14 +25,6 @@ public partial class Benefit
     public bool IsDeleted { get; set; }
 
     public bool IsUpdated { get; set; }
-
-    public DateTime CreatedDate { get; set; }
-
-    public string CreatedBy { get; set; } = null!;
-
-    public DateTime? ModifiedDate { get; set; }
-
-    public string? ModifiedBy { get; set; }
 
     public virtual ICollection<BenefitsHistory> BenefitsHistories { get; set; } = new List<BenefitsHistory>();
 

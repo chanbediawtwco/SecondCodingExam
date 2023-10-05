@@ -12,7 +12,7 @@ namespace SecondCodingExam.Tests
         [Fact]
         public void GetCalculationHistory()
         {
-            var MockCalculationHistoryService = new CalculationHistoryService(null,null);
+            var MockCalculationHistoryService = new CalculationHistoryService(null,null, null);
 
             var Result = MockCalculationHistoryService.GetCalculationHistory(1,1);
 

@@ -20,7 +20,7 @@ namespace SecondCodingExam.Controllers
         {
             try
             {
-                return Ok(await _calculatorService.GetCurrentCalculation(CustomerId));
+                return Ok(await _calculatorService.GetCalculationsList(CustomerId));
             }
             catch (Exception ex)
             {

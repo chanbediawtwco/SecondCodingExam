@@ -11,15 +11,6 @@ namespace SecondCodingExam.Tests
     public class BenefitHistoryServiceTests
     {
         [Fact]
-        public void GetBenefitHistoriesById()
-        {
-            var MockBenefitService = new BenefitHistoryService(null, null, null, null, null, null);
-
-            var Result = MockBenefitService.GetBenefitHistoriesById(1);
-
-            Assert.NotNull(Result);
-        }
-        [Fact]
         public void GetBenefitHistories()
         {
             var MockBenefitService = new BenefitHistoryService(null, null, null, null, null, null);

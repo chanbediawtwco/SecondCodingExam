@@ -110,6 +110,78 @@ namespace SecondCodingExam.Mapper
                 .ForMember(CustomersHistory => CustomersHistory.Id, Option => Option.Ignore())
                 .ForMember(CustomersHistory => CustomersHistory.CustomerId,
                 Option => Option.MapFrom(Customer => Customer.Id));
+            CreateMap<Benefit, BenefitDto>()
+                .ForMember(BenefitDto => BenefitDto.Id,
+                Option => Option.MapFrom(Benefit => Benefit.Id))
+                .ForMember(BenefitDto => BenefitDto.GuaranteedIssue,
+                Option => Option.MapFrom(Benefit => Benefit.GuaranteedIssue))
+                .ForMember(BenefitDto => BenefitDto.MaxAgeLimit,
+                Option => Option.MapFrom(Benefit => Benefit.MaxAgeLimit))
+                .ForMember(BenefitDto => BenefitDto.MinAgeLimit,
+                Option => Option.MapFrom(Benefit => Benefit.MinAgeLimit))
+                .ForMember(BenefitDto => BenefitDto.MaxRange,
+                Option => Option.MapFrom(Benefit => Benefit.MaxRange))
+                .ForMember(BenefitDto => BenefitDto.MinRange,
+                Option => Option.MapFrom(Benefit => Benefit.MinRange))
+                .ForMember(BenefitDto => BenefitDto.Increments,
+                Option => Option.MapFrom(Benefit => Benefit.Increments));
+            CreateMap<CustomersCurrentBenefit, CustomersCurrentBenefitDto>();
+            CreateMap<CustomersBenefitsHistory, CustomersBenefitsHistoryDto>()
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.Id,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.Id))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.CustomersCurrentBenefitsId,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.CustomersCurrentBenefitsId))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.GuaranteedIssue,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.GuaranteedIssue))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MaxAgeLimit,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MaxAgeLimit))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MinAgeLimit,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MinAgeLimit))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MaxRange,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MaxRange))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MinRange,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MinRange))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.Increments,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.Increments));
+            CreateMap<BenefitsHistory, BenefitsHistoryDto>();
+            CreateMap<Calculation, CalculationDto>()
+                .ForMember(CalculationsHistory => CalculationsHistory.Id,
+                Option => Option.MapFrom(Calculation => Calculation.Id))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomersCurrentBenefitsId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomersCurrentBenefitsId))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomerId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomerId))
+                .ForMember(CalculationsHistory => CalculationsHistory.Multiple,
+                Option => Option.MapFrom(Calculation => Calculation.Multiple))
+                .ForMember(CalculationsHistory => CalculationsHistory.BenefitsAmountQuotation,
+                Option => Option.MapFrom(Calculation => Calculation.BenefitsAmountQuotation))
+                .ForMember(CalculationsHistory => CalculationsHistory.PendedAmount,
+                Option => Option.MapFrom(Calculation => Calculation.PendedAmount))
+                .ForMember(CalculationsHistory => CalculationsHistory.CurrentBenefit,
+                Option => Option.MapFrom(Calculation => Calculation.CurrentBenefit))
+                .ForMember(CalculationsHistory => CalculationsHistory.IsBenefitPending,
+                Option => Option.MapFrom(Calculation => Calculation.IsBenefitPending));
+            CreateMap<CalculationsHistory, CalculationsHistoryDto>()
+                .ForMember(CalculationsHistory => CalculationsHistory.Id,
+                Option => Option.MapFrom(Calculation => Calculation.Id))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomersCurrentBenefitsId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomersCurrentBenefitsId))
+                .ForMember(CalculationsHistory => CalculationsHistory.CustomerId,
+                Option => Option.MapFrom(Calculation => Calculation.CustomerId))
+                .ForMember(CalculationsHistory => CalculationsHistory.Multiple,
+                Option => Option.MapFrom(Calculation => Calculation.Multiple))
+                .ForMember(CalculationsHistory => CalculationsHistory.BenefitsAmountQuotation,
+                Option => Option.MapFrom(Calculation => Calculation.BenefitsAmountQuotation))
+                .ForMember(CalculationsHistory => CalculationsHistory.PendedAmount,
+                Option => Option.MapFrom(Calculation => Calculation.PendedAmount))
+                .ForMember(CalculationsHistory => CalculationsHistory.CurrentBenefit,
+                Option => Option.MapFrom(Calculation => Calculation.CurrentBenefit))
+                .ForMember(CalculationsHistory => CalculationsHistory.IsBenefitPending,
+                Option => Option.MapFrom(Calculation => Calculation.IsBenefitPending))
+                .ForMember(CalculationsHistory => CalculationsHistory.CreatedDate,
+                Option => Option.MapFrom(Calculation => Calculation.CreatedDate))
+                .ForMember(CalculationsHistory => CalculationsHistory.ModifiedDate,
+                Option => Option.MapFrom(Calculation => Calculation.ModifiedDate));
         }
     }
 }

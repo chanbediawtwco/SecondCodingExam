@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SecondCodingExam.Services;
+using System;
 using System.Collections.Generic;
 
 namespace SecondCodingExam.Models;
 
-public partial class Customer
+public partial class Customer: GenericAuditClass
 {
     public int Id { get; set; }
 
@@ -20,14 +21,6 @@ public partial class Customer
     public bool IsDeleted { get; set; }
 
     public bool IsUpdated { get; set; }
-
-    public DateTime CreatedDate { get; set; }
-
-    public string CreatedBy { get; set; } = null!;
-
-    public DateTime? ModifiedDate { get; set; }
-
-    public string? ModifiedBy { get; set; }
 
     public virtual ICollection<Calculation> Calculations { get; set; } = new List<Calculation>();
 

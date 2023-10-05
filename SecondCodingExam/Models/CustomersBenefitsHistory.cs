@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SecondCodingExam.Services;
+using System;
 using System.Collections.Generic;
 
 namespace SecondCodingExam.Models;
 
-public partial class CustomersBenefitsHistory
+public partial class CustomersBenefitsHistory: GenericAuditClassForHistory
 {
     public int Id { get; set; }
 
@@ -26,14 +27,6 @@ public partial class CustomersBenefitsHistory
     public int Increments { get; set; }
 
     public bool IsDeleted { get; set; }
-
-    public DateTime BenefitCreatedDate { get; set; }
-
-    public string BenefitCreatedBy { get; set; } = null!;
-
-    public DateTime ModifiedDate { get; set; }
-
-    public string ModifiedBy { get; set; } = null!;
 
     public virtual Customer Customer { get; set; } = null!;
 
