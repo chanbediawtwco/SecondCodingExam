@@ -126,6 +126,24 @@ namespace SecondCodingExam.Mapper
                 .ForMember(BenefitDto => BenefitDto.Increments,
                 Option => Option.MapFrom(Benefit => Benefit.Increments));
             CreateMap<CustomersCurrentBenefit, CustomersCurrentBenefitDto>();
+            CreateMap<CustomersBenefitsHistory, CustomersBenefitsHistoryDto>()
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.Id,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.Id))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.CustomersCurrentBenefitsId,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.CustomersCurrentBenefitsId))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.GuaranteedIssue,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.GuaranteedIssue))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MaxAgeLimit,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MaxAgeLimit))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MinAgeLimit,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MinAgeLimit))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MaxRange,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MaxRange))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.MinRange,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.MinRange))
+                .ForMember(CustomersBenefitsHistoryDto => CustomersBenefitsHistoryDto.Increments,
+                Option => Option.MapFrom(CustomersBenefitsHistory => CustomersBenefitsHistory.Increments));
+            CreateMap<BenefitsHistory, BenefitsHistoryDto>();
         }
     }
 }

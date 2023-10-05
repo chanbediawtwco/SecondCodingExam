@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SecondCodingExam.Data;
+using SecondCodingExam.Dto;
 using SecondCodingExam.Models;
 using SecondCodingExam.Services.Interface;
 
@@ -29,32 +30,28 @@ namespace SecondCodingExam.Services
             _accountService = accountService;
             _paginationService = paginationService;
         }
-        public async Task<BenefitsHistory> GetBenefitHistoriesById(int BenefitId)
+        public async Task<IAsyncEnumerable<BenefitsHistoryDto>> GetBenefitHistories(int BenefitId, int PageNumber)
         {
-            BenefitsHistory? BenefitsHistory = await _context.BenefitsHistories
-                .Where(BenefitHistory => BenefitHistory.Id == BenefitId && !BenefitHistory.IsDeleted)
-                .FirstOrDefaultAsync();
-            if (BenefitsHistory == null) throw new Exception(Constants.NoBenefitFound);
-            return BenefitsHistory;
+            List<BenefitsHistoryDto> BenefitsHistoryDtoList = new List<BenefitsHistoryDto>();
+            var BenefitHistories = await GetBenefitHistoriesAsync(BenefitId, PageNumber);
+            await foreach (var Benefit in BenefitHistories)
+            {
+                BenefitsHistoryDto BenefitDto = _mapper.Map<BenefitsHistoryDto>(Benefit);
+                BenefitsHistoryDtoList.Add(BenefitDto);
+            }
+            return BenefitsHistoryDtoList.ToAsyncEnumerable();
         }
-        private async Task<CustomersBenefitsHistory> GetCustomersBenefitHistoryById(int CustomerBenefitHistoryId)
-            => await _context.CustomersBenefitsHistories
-            .Where(CustomersBenefitsHistory => CustomersBenefitsHistory.Id == CustomerBenefitHistoryId)
-            .FirstAsync();
-        public async Task<IAsyncEnumerable<BenefitsHistory>> GetBenefitHistories(int BenefitId, int PageNumber)
-            => await Task.FromResult(_context.BenefitsHistories
-            .Where(BenefitHistory => BenefitHistory.BenefitId == BenefitId && !BenefitHistory.IsDeleted)
-            .OrderByDescending(BenefitHistory => BenefitHistory.ModifiedDate)
-            .Skip(_paginationService.GetPageNumber(PageNumber))
-            .Take(Constants.PageSize)
-            .AsAsyncEnumerable());
-        public async Task<IAsyncEnumerable<CustomersBenefitsHistory>> GetCustomersBenefitHistory(int CustomerId, int PageNumber)
-            => await Task.FromResult(_context.CustomersBenefitsHistories
-            .Where(CustomersBenefitsHistory => CustomersBenefitsHistory.CustomerId == CustomerId
-            && !CustomersBenefitsHistory.IsDeleted)
-            .Skip(_paginationService.GetPageNumber(PageNumber))
-            .Take(Constants.PageSize)
-            .AsAsyncEnumerable());
+        public async Task<IAsyncEnumerable<CustomersBenefitsHistoryDto>> GetCustomersBenefitHistory(int CustomerId, int PageNumber)
+        {
+            List<CustomersBenefitsHistoryDto> CustomersBenefitsHistoryDtoList = new List<CustomersBenefitsHistoryDto>();
+            var BenefitHistories = await GetCustomersBenefitHistoryAsync(CustomerId, PageNumber);
+            await foreach (var Benefit in BenefitHistories)
+            {
+                CustomersBenefitsHistoryDto CustomersBenefitsHistoryDto = _mapper.Map<CustomersBenefitsHistoryDto>(Benefit);
+                CustomersBenefitsHistoryDtoList.Add(CustomersBenefitsHistoryDto);
+            }
+            return CustomersBenefitsHistoryDtoList.ToAsyncEnumerable();
+        }
         public async Task<int> GetCustomersBenefitsHistoryId(int CurrentBenefitId)
             => await _context.CustomersBenefitsHistories.Where(CustomersBenefitsHistory => CustomersBenefitsHistory.CustomersCurrentBenefitsId == CurrentBenefitId)
             .Select(CustomersBenefitsHistory => CustomersBenefitsHistory.CustomersCurrentBenefitsId)
@@ -82,5 +79,31 @@ namespace SecondCodingExam.Services
             _context.CustomersBenefitsHistories.Add(CustomersBenefitsHistory);
             await _context.SaveChangesAsync();
         }
+        private async Task<IAsyncEnumerable<CustomersBenefitsHistory>> GetCustomersBenefitHistoryAsync(int CustomerId, int PageNumber)
+            => await Task.FromResult(_context.CustomersBenefitsHistories
+            .Where(CustomersBenefitsHistory => CustomersBenefitsHistory.CustomerId == CustomerId
+            && !CustomersBenefitsHistory.IsDeleted)
+            .Skip(_paginationService.GetPageNumber(PageNumber))
+            .Take(Constants.PageSize)
+            .AsAsyncEnumerable());
+        private async Task<IAsyncEnumerable<BenefitsHistory>> GetBenefitHistoriesAsync(int BenefitId, int PageNumber)
+            => await Task.FromResult(_context.BenefitsHistories
+            .Where(BenefitHistory => BenefitHistory.BenefitId == BenefitId && !BenefitHistory.IsDeleted)
+            .OrderByDescending(BenefitHistory => BenefitHistory.ModifiedDate)
+            .Skip(_paginationService.GetPageNumber(PageNumber))
+            .Take(Constants.PageSize)
+            .AsAsyncEnumerable());
+        private async Task<BenefitsHistory> GetBenefitHistoriesById(int BenefitId)
+        {
+            BenefitsHistory? BenefitsHistory = await _context.BenefitsHistories
+                .Where(BenefitHistory => BenefitHistory.Id == BenefitId && !BenefitHistory.IsDeleted)
+                .FirstOrDefaultAsync();
+            if (BenefitsHistory == null) throw new Exception(Constants.NoBenefitFound);
+            return BenefitsHistory;
+        }
+        private async Task<CustomersBenefitsHistory> GetCustomersBenefitHistoryById(int CustomerBenefitHistoryId)
+            => await _context.CustomersBenefitsHistories
+            .Where(CustomersBenefitsHistory => CustomersBenefitsHistory.Id == CustomerBenefitHistoryId)
+            .FirstAsync();
     }
 }
